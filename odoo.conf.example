@@ -1,0 +1,11 @@
+[options]
+; SapiOne - mẫu cấu hình Odoo.
+; Copy thành odoo.conf trước khi chạy:   cp odoo.conf.example odoo.conf
+admin_passwd = CHANGE_ME
+addons_path = /mnt/extra-addons,/usr/lib/python3/dist-packages/odoo/addons
+; DB host/user/password lấy từ biến môi trường (docker-compose.yml + .env)
+
+; --- Gợi ý cho production (sau reverse proxy) ---
+; proxy_mode = True
+; list_db = False
+; admin_passwd = <mật khẩu mạnh, duy nhất>

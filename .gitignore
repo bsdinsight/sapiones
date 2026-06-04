@@ -33,6 +33,10 @@ odoo.conf
 .DS_Store
 Thumbs.db
 
+# ===== Docker / local runtime =====
+.env
+odoo.conf
+
 # ===== SapiOne: chặn lộ tài liệu nội bộ vào repo công khai =====
 /private/
 *.internal.md

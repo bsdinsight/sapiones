@@ -49,7 +49,22 @@ SapiOne phát triển theo mô hình **open-core**:
 ## Nền tảng
 
 - Odoo Community 19
-- Hướng dẫn cài đặt sẽ được cập nhật khi các module được phát hành.
+
+## Chạy thử với Docker
+
+Yêu cầu: Docker + Docker Compose.
+
+```bash
+cp odoo.conf.example odoo.conf          # tùy chọn: đổi admin_passwd
+docker compose up -d                     # Postgres 16 + Odoo 19 (container "sapione")
+
+# Tạo DB và cài module:
+docker exec sapione odoo -d sapione -i l10n_vn_hr \
+  --db_host=db --db_user=odoo --db_password=odoo --stop-after-init --no-http
+docker restart sapione
+```
+
+Mở **http://localhost:8079** (mặc định chỉ bind localhost; đổi cổng trong `docker-compose.yml` nếu cần).
 
 ## Giấy phép
 

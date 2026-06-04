@@ -1,0 +1,46 @@
+# SapiOne — local dev stack (PostgreSQL + Odoo 19)
+# Container Odoo: "sapione" · DB: "sapione-db"
+#
+# Dùng cho phát triển / đánh giá ở LOCAL.
+# Production (VPS): dùng compose riêng + secrets qua .env, KHÔNG dùng mật khẩu mặc định.
+name: sapione
+
+services:
+  db:
+    image: postgres:16
+    container_name: sapione-db
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-odoo}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U odoo"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+
+  odoo:
+    image: odoo:19.0
+    container_name: sapione
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8079:8069"   # Web (chỉ mở localhost)
+      - "127.0.0.1:8074:8072"   # Longpolling / gevent
+    environment:
+      HOST: db
+      USER: odoo
+      PASSWORD: ${DB_PASSWORD:-odoo}
+    volumes:
+      - web-data:/var/lib/odoo
+      - ./odoo.conf:/etc/odoo/odoo.conf:ro
+      - ./:/mnt/extra-addons:ro
+    restart: unless-stopped
+
+volumes:
+  db-data:
+  web-data:

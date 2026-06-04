@@ -45,7 +45,7 @@ SapiOne phát triển theo mô hình **open-core**:
 
 ## Giấy phép
 
-Các module mã nguồn mở của SapiOne phát hành theo **LGPL-3.0** (tương thích Odoo). Xem [`LICENSE`](LICENSE); giấy phép nền GPL-3.0 kèm tại [`COPYING`](COPYING).
+Các module mã nguồn mở của SapiOne phát hành theo **LGPL-3.0** (tương thích Odoo) — xem [`LICENSE`](LICENSE).
 
 ## Về BSD
 

@@ -53,11 +53,10 @@
                 <field name="name"/>
                 <field name="employee_id"/>
                 <field name="tax_code"/>
-                <filter name="registered" string="Đã đăng ký" domain="[('is_registered','=',True)]"/>
-                <group expand="0" string="Nhóm theo">
-                    <filter name="group_employee" string="Nhân viên" context="{'group_by':'employee_id'}"/>
-                    <filter name="group_relationship" string="Quan hệ" context="{'group_by':'relationship'}"/>
-                </group>
+                <filter name="registered" string="Đã đăng ký" domain="[('is_registered', '=', True)]"/>
+                <separator/>
+                <filter name="group_employee" string="Nhân viên" context="{'group_by': 'employee_id'}"/>
+                <filter name="group_relationship" string="Quan hệ" context="{'group_by': 'relationship'}"/>
             </search>
         </field>
     </record>

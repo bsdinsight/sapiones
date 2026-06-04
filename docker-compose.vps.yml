@@ -43,6 +43,9 @@ services:
       - web-data:/var/lib/odoo
       - ./deploy/odoo.conf:/etc/odoo/odoo.conf:ro
       - ./:/mnt/extra-addons:ro
+      # Module thương mại (repo private bsdinsight/sapione-enterprise) — clone sibling cùng cấp /root/.
+      # Self-hoster chỉ dùng phần Community có thể bỏ dòng này.
+      - ../sapione-enterprise:/mnt/enterprise-addons:ro
     # Không expose host port — cloudflared (cùng network) truy cập odoo:8069
 
   cloudflared:

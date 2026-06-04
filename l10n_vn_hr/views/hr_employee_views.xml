@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_employee_form_vn" model="ir.ui.view">
+        <field name="name">hr.employee.form.vn</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Thông tin Việt Nam" name="vn_info" groups="hr.group_hr_user">
+                    <group>
+                        <group string="Giấy tờ tùy thân">
+                            <field name="vn_id_card"/>
+                            <field name="vn_id_card_date"/>
+                            <field name="vn_id_card_place"/>
+                        </group>
+                        <group string="Thuế &amp; Bảo hiểm">
+                            <field name="vn_tax_code"/>
+                            <field name="vn_si_code"/>
+                            <field name="dependent_count"/>
+                        </group>
+                        <group string="Thông tin khác">
+                            <field name="vn_hometown"/>
+                            <field name="vn_ethnicity"/>
+                            <field name="vn_religion"/>
+                        </group>
+                    </group>
+                    <separator string="Người phụ thuộc (giảm trừ gia cảnh)"/>
+                    <field name="dependent_ids">
+                        <list editable="bottom">
+                            <field name="name"/>
+                            <field name="relationship"/>
+                            <field name="date_birth"/>
+                            <field name="tax_code"/>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="is_registered"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -38,6 +38,14 @@ SapiOne phát triển theo mô hình **open-core**:
 
 > Cần tư vấn phiên bản thương mại? Liên hệ BSD: <https://bsdinsight.com>
 
+## Modules
+
+| Module | Tier | Mô tả |
+|---|---|---|
+| [`l10n_vn_hr`](l10n_vn_hr) | 🟢 Community (LGPL-3) | Bản địa hóa hồ sơ nhân sự VN: CCCD, MST cá nhân, sổ BHXH, quê quán/dân tộc/tôn giáo và quản lý **người phụ thuộc** (giảm trừ gia cảnh). |
+
+> Các module Community khác sẽ được bổ sung dần theo lộ trình.
+
 ## Nền tảng
 
 - Odoo Community 19

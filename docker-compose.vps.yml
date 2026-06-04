@@ -4,6 +4,7 @@
 #   git clone https://github.com/bsdinsight/sapione /root/sapione && cd /root/sapione
 #   cp deploy/.env.example .env                      # điền POSTGRES_PASSWORD + TUNNEL_TOKEN
 #   cp deploy/odoo.conf.example deploy/odoo.conf     # đổi admin_passwd mạnh
+#   chmod 644 deploy/odoo.conf                        # BẮT BUỘC: container user 'odoo' phải đọc được (Linux native)
 #   docker compose -f docker-compose.vps.yml up -d db odoo            # khởi tạo (chưa expose)
 #   docker compose -f docker-compose.vps.yml exec -T odoo \
 #     bash -lc 'odoo -d sapione -i l10n_vn_hr --db_host=$HOST --db_user=$USER --db_password=$PASSWORD --stop-after-init --no-http'

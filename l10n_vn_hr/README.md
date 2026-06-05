@@ -1,6 +1,6 @@
 # Vietnam - HR Localization (`l10n_vn_hr`)
 
-Bản địa hóa hồ sơ nhân sự Việt Nam cho Odoo — module nền (mã nguồn mở, **LGPL-3**) của bộ giải pháp **Sapioness** by [BSD](https://bsdinsight.com).
+Bản địa hóa hồ sơ nhân sự Việt Nam cho Odoo — module nền (mã nguồn mở, **LGPL-3**) của bộ giải pháp **Sapiones** by [BSD](https://bsdinsight.com).
 
 ## Tính năng
 
@@ -28,7 +28,7 @@ Các trường thông tin nằm trong tab **“Thông tin Việt Nam”** của 
 
 Đặt thư mục `l10n_vn_hr` vào addons path của Odoo 19, cập nhật danh sách ứng dụng và cài đặt module.
 
-## Vai trò trong Sapioness
+## Vai trò trong Sapiones
 
 Đây là **lớp dữ liệu nền** cho các module thương mại (đặc biệt là Payroll VN): MST, sổ BHXH, người phụ thuộc là đầu vào để tính BHXH và thuế TNCN.
 

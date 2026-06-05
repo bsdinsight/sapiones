@@ -4,6 +4,9 @@ from odoo import api, fields, models
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
+    country_id = fields.Many2one(
+        'res.country',
+        default=lambda self: self.env.ref('base.vn', raise_if_not_found=False))
     vn_ward_id = fields.Many2one(
         'sapiones.vn.ward', string='Phường / Xã',
         domain="[('state_id', '=?', state_id)]",

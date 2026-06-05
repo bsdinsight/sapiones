@@ -1,6 +1,6 @@
-# Sapioness HR - Chứng chỉ nhân viên (`sapiones_hr_certificate`)
+# Sapiones HR - Chứng chỉ nhân viên (`sapiones_hr_certificate`)
 
-Quản lý chứng chỉ / bằng cấp / giấy phép của nhân viên + **theo dõi & cảnh báo hết hạn**. Module nền (mã nguồn mở, **LGPL-3**) của Sapioness by [BSD](https://bsdinsight.com).
+Quản lý chứng chỉ / bằng cấp / giấy phép của nhân viên + **theo dõi & cảnh báo hết hạn**. Module nền (mã nguồn mở, **LGPL-3**) của Sapiones by [BSD](https://bsdinsight.com).
 
 ## Tính năng
 

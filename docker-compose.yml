@@ -1,4 +1,4 @@
-# Sapioness — local dev stack (PostgreSQL + Odoo 19)
+# Sapiones — local dev stack (PostgreSQL + Odoo 19)
 # Container Odoo: "sapiones" · DB: "sapiones-db"
 #
 # Dùng cho phát triển / đánh giá ở LOCAL.

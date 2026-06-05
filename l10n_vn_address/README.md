@@ -1,6 +1,6 @@
 # Vietnam - Administrative Divisions 2025 (`l10n_vn_address`)
 
-Đơn vị hành chính Việt Nam theo cải cách **2025**: **34 tỉnh/thành**, **bỏ cấp huyện/quận** — chỉ còn 2 cấp **Tỉnh/Thành phố → Phường/Xã**. Module nền (mã nguồn mở, **LGPL-3**) của Sapioness by [BSD](https://bsdinsight.com).
+Đơn vị hành chính Việt Nam theo cải cách **2025**: **34 tỉnh/thành**, **bỏ cấp huyện/quận** — chỉ còn 2 cấp **Tỉnh/Thành phố → Phường/Xã**. Module nền (mã nguồn mở, **LGPL-3**) của Sapiones by [BSD](https://bsdinsight.com).
 
 ## Tính năng
 

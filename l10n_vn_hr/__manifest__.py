@@ -4,7 +4,7 @@
     'category': 'Human Resources/Employees',
     'summary': 'Bản địa hóa hồ sơ nhân sự Việt Nam: CCCD, MST, sổ BHXH, người phụ thuộc',
     'description': """
-Bản địa hóa nhân sự Việt Nam (Sapioness Community)
+Bản địa hóa nhân sự Việt Nam (Sapiones Community)
 =================================================
 
 Bổ sung các thông tin nhân sự đặc thù Việt Nam vào hồ sơ nhân viên:
@@ -23,7 +23,7 @@ Phát triển bởi BSD — https://bsdinsight.com
     'author': 'BSD',
     'website': 'https://bsdinsight.com',
     'license': 'LGPL-3',
-    'depends': ['hr'],
+    'depends': ['hr', 'l10n_vn_address'],
     'data': [
         'security/ir.model.access.csv',
         'views/hr_employee_dependent_views.xml',

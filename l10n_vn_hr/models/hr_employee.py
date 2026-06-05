@@ -29,6 +29,14 @@ class HrEmployee(models.Model):
     vn_ethnicity = fields.Char(string='Dân tộc', groups='hr.group_hr_user')
     vn_religion = fields.Char(string='Tôn giáo', groups='hr.group_hr_user')
 
+    # --- Địa chỉ riêng theo chuẩn VN (Phường/Xã) ---
+    private_country_id = fields.Many2one(
+        'res.country',
+        default=lambda self: self.env.ref('base.vn', raise_if_not_found=False))
+    private_vn_ward_id = fields.Many2one(
+        'sapiones.vn.ward', string='Phường / Xã',
+        domain="[('state_id', '=?', private_state_id)]", groups='hr.group_hr_user')
+
     # --- Người phụ thuộc (giảm trừ gia cảnh) ---
     dependent_ids = fields.One2many(
         'hr.employee.dependent', 'employee_id',
@@ -62,3 +70,8 @@ class HrEmployee(models.Model):
         for emp in self:
             if emp.vn_si_code and not re.fullmatch(r'\d{10}', emp.vn_si_code.strip()):
                 raise ValidationError(_('Số sổ BHXH phải gồm đúng 10 chữ số.'))
+
+    @api.onchange('private_state_id')
+    def _onchange_private_state_clear_ward(self):
+        if self.private_vn_ward_id and self.private_vn_ward_id.state_id != self.private_state_id:
+            self.private_vn_ward_id = False

@@ -7,7 +7,7 @@
         </record>
 
         <record id="cron_certificate_expiry" model="ir.cron">
-            <field name="name">Sapioness: Nhắc hạn chứng chỉ nhân viên</field>
+            <field name="name">Sapiones: Nhắc hạn chứng chỉ nhân viên</field>
             <field name="model_id" ref="model_sapiones_hr_certificate"/>
             <field name="user_id" ref="base.user_root"/>
             <field name="state">code</field>

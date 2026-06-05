@@ -5,9 +5,17 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
-            <field name="state_id" position="after">
-                <field name="vn_ward_id"/>
-            </field>
+            <!-- Bố cục địa chỉ VN: Quốc gia (mặc định VN) → Tỉnh/TP → Phường/Xã → Địa chỉ -->
+            <xpath expr="//div[contains(@class, 'o_address_format')]" position="replace">
+                <div class="o_address_format">
+                    <field name="country_id" placeholder="Quốc gia" options="{'no_create': True}"/>
+                    <field name="state_id" string="Tỉnh / Thành phố" placeholder="Tỉnh / Thành phố"
+                           domain="[('country_id', '=', country_id)]" options="{'no_create': True}"/>
+                    <field name="vn_ward_id" string="Phường / Xã" placeholder="Phường / Xã"
+                           domain="[('state_id', '=', state_id)]" options="{'no_create': True}"/>
+                    <field name="street" string="Địa chỉ" placeholder="Số nhà, tên đường..."/>
+                </div>
+            </xpath>
         </field>
     </record>
 </odoo>

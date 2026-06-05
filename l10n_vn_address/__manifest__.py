@@ -4,7 +4,7 @@
     'category': 'Localization',
     'summary': 'Tỉnh/Thành phố → Phường/Xã Việt Nam (cải cách 2025: 34 tỉnh, 2 cấp, bỏ huyện)',
     'description': """
-Đơn vị hành chính Việt Nam 2025 (Sapioness Community)
+Đơn vị hành chính Việt Nam 2025 (Sapiones Community)
 ====================================================
 
 Phản ánh cải cách hành chính 2025: **34 tỉnh/thành**, **bỏ cấp huyện/quận** —

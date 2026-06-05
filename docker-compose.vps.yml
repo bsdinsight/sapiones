@@ -1,4 +1,4 @@
-# Sapioness — VPS stack (PostgreSQL + Odoo 19 + Cloudflare Tunnel)
+# Sapiones — VPS stack (PostgreSQL + Odoo 19 + Cloudflare Tunnel)
 #
 # Trên VPS:
 #   git clone https://github.com/bsdinsight/sapiones /root/sapiones && cd /root/sapiones

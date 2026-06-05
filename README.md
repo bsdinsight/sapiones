@@ -1,4 +1,4 @@
-# Sapioness
+# Sapiones
 
 **Phần mềm quản lý nhân sự (HRM/HCM) cho doanh nghiệp Việt Nam — chuyên sâu cho ngành sản xuất.**
 
@@ -6,18 +6,18 @@ Phát triển trên nền tảng [Odoo](https://www.odoo.com) Community 19, bở
 
 ---
 
-## Sapioness là gì?
+## Sapiones là gì?
 
-Sapioness là bộ giải pháp quản trị nguồn nhân lực thiết kế cho doanh nghiệp Việt Nam, đặc biệt là các doanh nghiệp **sản xuất** với nhu cầu quản lý lao động số lượng lớn, ca kíp và tính lương phức tạp.
+Sapiones là bộ giải pháp quản trị nguồn nhân lực thiết kế cho doanh nghiệp Việt Nam, đặc biệt là các doanh nghiệp **sản xuất** với nhu cầu quản lý lao động số lượng lớn, ca kíp và tính lương phức tạp.
 
 Định hướng dài hạn: đạt độ sâu chức năng của các nền tảng HCM hàng đầu (Workday, SAP SuccessFactors, Oracle HCM), nhưng tối ưu cho bối cảnh và pháp luật lao động Việt Nam.
 
 ## Mô hình Open-Core
 
-Sapioness phát triển theo mô hình **open-core**:
+Sapiones phát triển theo mô hình **open-core**:
 
-- 🟢 **Sapioness Community (mã nguồn mở, miễn phí)** — một HRIS hoàn chỉnh cho một pháp nhân, đủ dùng cho doanh nghiệp nhỏ và vừa.
-- 🔵 **Sapioness Professional / Enterprise (thương mại)** — bổ sung các năng lực nâng cao cho doanh nghiệp sản xuất quy mô lớn và nhiều pháp nhân.
+- 🟢 **Sapiones Community (mã nguồn mở, miễn phí)** — một HRIS hoàn chỉnh cho một pháp nhân, đủ dùng cho doanh nghiệp nhỏ và vừa.
+- 🔵 **Sapiones Professional / Enterprise (thương mại)** — bổ sung các năng lực nâng cao cho doanh nghiệp sản xuất quy mô lớn và nhiều pháp nhân.
 
 ### Bản Community gồm
 
@@ -68,7 +68,7 @@ Mở **http://localhost:8079** (mặc định chỉ bind localhost; đổi cổn
 
 ## Giấy phép
 
-Các module mã nguồn mở của Sapioness phát hành theo **LGPL-3.0** (tương thích Odoo) — xem [`LICENSE`](LICENSE).
+Các module mã nguồn mở của Sapiones phát hành theo **LGPL-3.0** (tương thích Odoo) — xem [`LICENSE`](LICENSE).
 
 ## Về BSD
 

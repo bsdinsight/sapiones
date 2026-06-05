@@ -1,5 +1,5 @@
 [options]
-; Sapioness - mẫu cấu hình Odoo.
+; Sapiones - mẫu cấu hình Odoo.
 ; Copy thành odoo.conf trước khi chạy:   cp odoo.conf.example odoo.conf
 admin_passwd = CHANGE_ME
 addons_path = /mnt/extra-addons,/usr/lib/python3/dist-packages/odoo/addons

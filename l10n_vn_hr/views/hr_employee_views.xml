@@ -42,4 +42,23 @@
         </field>
     </record>
 
+    <!-- Địa chỉ riêng nhân viên theo chuẩn VN: Quốc gia → Tỉnh/TP → Phường/Xã → Địa chỉ -->
+    <record id="view_employee_form_vn_address" model="ir.ui.view">
+        <field name="name">hr.employee.form.vn.address</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[contains(@class, 'o_address_format')]" position="replace">
+                <div class="o_address_format">
+                    <field name="private_country_id" placeholder="Quốc gia" options="{'no_create': True}"/>
+                    <field name="private_state_id" string="Tỉnh / Thành phố" placeholder="Tỉnh / Thành phố"
+                           domain="[('country_id', '=', private_country_id)]" options="{'no_create': True}"/>
+                    <field name="private_vn_ward_id" string="Phường / Xã" placeholder="Phường / Xã"
+                           domain="[('state_id', '=', private_state_id)]" options="{'no_create': True}"/>
+                    <field name="private_street" string="Địa chỉ" placeholder="Số nhà, tên đường..."/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
 </odoo>

@@ -37,7 +37,7 @@ Thumbs.db
 .env
 odoo.conf
 
-# ===== Sapioness: chặn lộ tài liệu nội bộ vào repo công khai =====
+# ===== Sapiones: chặn lộ tài liệu nội bộ vào repo công khai =====
 /private/
 *.internal.md
 feature-tiering.md

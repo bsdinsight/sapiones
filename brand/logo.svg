@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 260">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#4F46E5"/><stop offset="1" stop-color="#06B6D4"/></linearGradient></defs>
+  <rect x="30" y="30" width="200" height="200" rx="46" fill="url(#g)"/>
+  <text x="130" y="178" font-family="Arial Black,Arial,sans-serif" font-size="150" fill="#fff" text-anchor="middle">S</text>
+  <text x="264" y="150" font-family="Arial,sans-serif" font-weight="bold" font-size="98" fill="#0F172A">Sapiones</text>
+  <text x="268" y="205" font-family="Arial,sans-serif" font-size="33" fill="#64748B">Quản trị nhân sự  •  by BSD</text>
+</svg>

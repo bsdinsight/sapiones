@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_certificate_root"
+        name="Chứng chỉ"
+        parent="hr.menu_hr_root"
+        sequence="32"
+        groups="hr.group_hr_user"/>
+
+    <menuitem id="menu_certificate"
+        name="Chứng chỉ nhân viên"
+        parent="menu_certificate_root"
+        action="action_certificate"
+        sequence="10"/>
+
+    <menuitem id="menu_certificate_type"
+        name="Loại chứng chỉ"
+        parent="menu_certificate_root"
+        action="action_certificate_type"
+        sequence="20"
+        groups="hr.group_hr_manager"/>
+</odoo>

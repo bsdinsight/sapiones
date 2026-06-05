@@ -2,11 +2,11 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, _
 
-WARN_PARAM = 'sapione_hr_certificate.warn_days'
+WARN_PARAM = 'sapiones_hr_certificate.warn_days'
 
 
 class HrCertificate(models.Model):
-    _name = 'sapione.hr.certificate'
+    _name = 'sapiones.hr.certificate'
     _description = 'Chứng chỉ / Bằng cấp nhân viên'
     _order = 'date_expiry, id'
     _inherit = ['mail.thread', 'mail.activity.mixin']
@@ -15,7 +15,7 @@ class HrCertificate(models.Model):
     employee_id = fields.Many2one(
         'hr.employee', string='Nhân viên', required=True,
         ondelete='cascade', index=True, tracking=True)
-    type_id = fields.Many2one('sapione.hr.certificate.type', string='Loại')
+    type_id = fields.Many2one('sapiones.hr.certificate.type', string='Loại')
     category = fields.Selection(related='type_id.category', string='Nhóm', store=True)
     number = fields.Char(string='Số hiệu')
     issuing_organization = fields.Char(string='Đơn vị cấp')

@@ -2,8 +2,8 @@
 <odoo>
     <!-- ===== Chứng chỉ ===== -->
     <record id="view_certificate_list" model="ir.ui.view">
-        <field name="name">sapione.hr.certificate.list</field>
-        <field name="model">sapione.hr.certificate</field>
+        <field name="name">sapiones.hr.certificate.list</field>
+        <field name="model">sapiones.hr.certificate</field>
         <field name="arch" type="xml">
             <list decoration-danger="state == 'expired'" decoration-warning="state == 'expiring'">
                 <field name="employee_id"/>
@@ -23,8 +23,8 @@
     </record>
 
     <record id="view_certificate_form" model="ir.ui.view">
-        <field name="name">sapione.hr.certificate.form</field>
-        <field name="model">sapione.hr.certificate</field>
+        <field name="name">sapiones.hr.certificate.form</field>
+        <field name="model">sapiones.hr.certificate</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
@@ -57,8 +57,8 @@
     </record>
 
     <record id="view_certificate_search" model="ir.ui.view">
-        <field name="name">sapione.hr.certificate.search</field>
-        <field name="model">sapione.hr.certificate</field>
+        <field name="name">sapiones.hr.certificate.search</field>
+        <field name="model">sapiones.hr.certificate</field>
         <field name="arch" type="xml">
             <search>
                 <field name="name"/>
@@ -81,7 +81,7 @@
 
     <record id="action_certificate" model="ir.actions.act_window">
         <field name="name">Chứng chỉ nhân viên</field>
-        <field name="res_model">sapione.hr.certificate</field>
+        <field name="res_model">sapiones.hr.certificate</field>
         <field name="view_mode">list,form</field>
         <field name="search_view_id" ref="view_certificate_search"/>
         <field name="help" type="html">
@@ -92,8 +92,8 @@
 
     <!-- ===== Loại chứng chỉ ===== -->
     <record id="view_certificate_type_list" model="ir.ui.view">
-        <field name="name">sapione.hr.certificate.type.list</field>
-        <field name="model">sapione.hr.certificate.type</field>
+        <field name="name">sapiones.hr.certificate.type.list</field>
+        <field name="model">sapiones.hr.certificate.type</field>
         <field name="arch" type="xml">
             <list editable="bottom">
                 <field name="code"/>
@@ -107,7 +107,7 @@
 
     <record id="action_certificate_type" model="ir.actions.act_window">
         <field name="name">Loại chứng chỉ</field>
-        <field name="res_model">sapione.hr.certificate.type</field>
+        <field name="res_model">sapiones.hr.certificate.type</field>
         <field name="view_mode">list,form</field>
     </record>
 </odoo>

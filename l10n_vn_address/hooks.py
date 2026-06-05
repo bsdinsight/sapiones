@@ -1,6 +1,6 @@
 """Tự nạp 3321 phường/xã khi cài module, khớp vào 34 tỉnh có sẵn trong res.country.state.
 
-Chỉ ghi vào bảng sapione.vn.ward (không sửa res.country.state) → an toàn, idempotent
+Chỉ ghi vào bảng sapiones.vn.ward (không sửa res.country.state) → an toàn, idempotent
 theo (state_id, name). Khớp tỉnh theo tên chuẩn hoá: NFC + lowercase + bỏ tiền tố
 ('thủ đô', 'thành phố', 'tỉnh'...). ALIAS xử lý Huế (mới) ↔ Thừa Thiên - Huế (cũ).
 """
@@ -27,7 +27,7 @@ def _norm(s):
 
 
 def post_init_hook(env):
-    Ward = env['sapione.vn.ward']
+    Ward = env['sapiones.vn.ward']
     vn = env['res.country'].search([('code', '=', 'VN')], limit=1)
     if not vn:
         _logger.warning('l10n_vn_address: không tìm thấy quốc gia VN, bỏ qua seed.')

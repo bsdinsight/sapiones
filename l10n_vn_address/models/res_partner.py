@@ -5,7 +5,7 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     vn_ward_id = fields.Many2one(
-        'sapione.vn.ward', string='Phường / Xã',
+        'sapiones.vn.ward', string='Phường / Xã',
         domain="[('state_id', '=?', state_id)]",
         help='Đơn vị hành chính cấp xã (cải cách 2025). Lọc theo Tỉnh/Thành phố đã chọn.')
 

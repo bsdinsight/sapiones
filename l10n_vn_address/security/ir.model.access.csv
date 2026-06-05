@@ -1,3 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_vn_ward_user,sapione.vn.ward.user,model_sapione_vn_ward,base.group_user,1,0,0,0
-access_vn_ward_system,sapione.vn.ward.system,model_sapione_vn_ward,base.group_system,1,1,1,1
+access_vn_ward_user,sapiones.vn.ward.user,model_sapiones_vn_ward,base.group_user,1,0,0,0
+access_vn_ward_system,sapiones.vn.ward.system,model_sapiones_vn_ward,base.group_system,1,1,1,1

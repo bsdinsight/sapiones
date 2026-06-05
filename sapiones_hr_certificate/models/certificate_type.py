@@ -2,7 +2,7 @@ from odoo import fields, models
 
 
 class HrCertificateType(models.Model):
-    _name = 'sapione.hr.certificate.type'
+    _name = 'sapiones.hr.certificate.type'
     _description = 'Loại chứng chỉ'
     _order = 'category, name'
 

@@ -1,9 +1,9 @@
 [options]
-; SapiOne - cấu hình Odoo PRODUCTION (mẫu).
+; Sapioness - cấu hình Odoo PRODUCTION (mẫu).
 ; Trên VPS: cp deploy/odoo.conf.example deploy/odoo.conf, rồi đặt admin_passwd mạnh.
 admin_passwd = CHANGE_ME_STRONG
 addons_path = /mnt/extra-addons,/mnt/enterprise-addons,/usr/lib/python3/dist-packages/odoo/addons
 proxy_mode = True
 list_db = False
-dbfilter = ^sapione$
+dbfilter = ^sapiones$
 ; DB host/user/password lấy từ biến môi trường (docker-compose.vps.yml + .env)

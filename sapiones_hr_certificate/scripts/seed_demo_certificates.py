@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 """Seed chứng chỉ demo cho các nhân viên đã có (mix còn hạn / sắp hết / hết hạn).
-Chạy: docker exec -i sapione-odoo bash -lc 'odoo shell -d sapione --db_host=$HOST --db_user=$USER --db_password=$PASSWORD --no-http' < seed_demo_certificates.py
+Chạy: docker exec -i sapiones-odoo bash -lc 'odoo shell -d sapiones --db_host=$HOST --db_user=$USER --db_password=$PASSWORD --no-http' < seed_demo_certificates.py
 Idempotent: bỏ qua nếu đã có chứng chỉ.
 """
 from datetime import date, timedelta
 
 
 def run(env):
-    C = env['sapione.hr.certificate']
+    C = env['sapiones.hr.certificate']
     if C.search_count([]):
         print('Đã có chứng chỉ — bỏ qua.')
         return
-    T = env['sapione.hr.certificate.type']
+    T = env['sapiones.hr.certificate.type']
     types = {t.code: t for t in T.search([])}
     today = date.today()
     offsets = [-30, -90, 20, 45, 300, 500, 600, 800]  # mix: hết hạn / sắp hết / còn hạn

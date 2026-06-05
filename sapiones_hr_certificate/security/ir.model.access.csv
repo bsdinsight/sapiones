@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_cert_type_user,sapiones.hr.certificate.type.user,model_sapiones_hr_certificate_type,hr.group_hr_user,1,0,0,0
+access_cert_type_manager,sapiones.hr.certificate.type.manager,model_sapiones_hr_certificate_type,hr.group_hr_manager,1,1,1,1
+access_cert_user,sapiones.hr.certificate.user,model_sapiones_hr_certificate,hr.group_hr_user,1,1,1,1
+access_cert_manager,sapiones.hr.certificate.manager,model_sapiones_hr_certificate,hr.group_hr_manager,1,1,1,1

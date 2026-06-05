@@ -4,7 +4,7 @@
     'category': 'Human Resources/Employees',
     'summary': 'Bản địa hóa hồ sơ nhân sự Việt Nam: CCCD, MST, sổ BHXH, người phụ thuộc',
     'description': """
-Bản địa hóa nhân sự Việt Nam (SapiOne Community)
+Bản địa hóa nhân sự Việt Nam (Sapioness Community)
 =================================================
 
 Bổ sung các thông tin nhân sự đặc thù Việt Nam vào hồ sơ nhân viên:

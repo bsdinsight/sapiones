@@ -1,11 +1,11 @@
 # Vietnam - Administrative Divisions 2025 (`l10n_vn_address`)
 
-Đơn vị hành chính Việt Nam theo cải cách **2025**: **34 tỉnh/thành**, **bỏ cấp huyện/quận** — chỉ còn 2 cấp **Tỉnh/Thành phố → Phường/Xã**. Module nền (mã nguồn mở, **LGPL-3**) của SapiOne by [BSD](https://bsdinsight.com).
+Đơn vị hành chính Việt Nam theo cải cách **2025**: **34 tỉnh/thành**, **bỏ cấp huyện/quận** — chỉ còn 2 cấp **Tỉnh/Thành phố → Phường/Xã**. Module nền (mã nguồn mở, **LGPL-3**) của Sapioness by [BSD](https://bsdinsight.com).
 
 ## Tính năng
 
 - **Tỉnh/Thành phố**: dùng luôn `res.country.state` (Odoo 19 base đã có sẵn 34 tỉnh post-2025, mã `VN-XX`).
-- **Phường/Xã**: model `sapione.vn.ward` (name, code, state_id, active) — **3321** đơn vị, **tự nạp khi cài** (`post_init_hook`).
+- **Phường/Xã**: model `sapiones.vn.ward` (name, code, state_id, active) — **3321** đơn vị, **tự nạp khi cài** (`post_init_hook`).
 - `res.partner` thêm trường **Phường/Xã** (lọc theo Tỉnh đã chọn).
 - Menu quản lý: **Địa giới VN → Tỉnh/Thành phố · Phường/Xã**.
 

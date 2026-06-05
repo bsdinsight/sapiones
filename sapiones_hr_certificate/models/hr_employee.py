@@ -5,7 +5,7 @@ class HrEmployee(models.Model):
     _inherit = 'hr.employee'
 
     certificate_ids = fields.One2many(
-        'sapione.hr.certificate', 'employee_id',
+        'sapiones.hr.certificate', 'employee_id',
         string='Chứng chỉ', groups='hr.group_hr_user')
     certificate_count = fields.Integer(
         compute='_compute_certificate_count', groups='hr.group_hr_user')

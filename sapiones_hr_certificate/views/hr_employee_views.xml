@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="hr.view_employee_form"/>
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
-                <page string="Chứng chỉ" name="sapione_certificates" groups="hr.group_hr_user">
+                <page string="Chứng chỉ" name="sapiones_certificates" groups="hr.group_hr_user">
                     <field name="certificate_alert" invisible="1"/>
                     <div class="alert alert-warning" role="alert" invisible="not certificate_alert">
                         ⚠️ Nhân viên có chứng chỉ đã hết hạn — vui lòng kiểm tra và gia hạn.

@@ -1,10 +1,10 @@
 {
-    'name': 'SapiOne HR - Chứng chỉ nhân viên',
+    'name': 'Sapioness HR - Chứng chỉ nhân viên',
     'version': '19.0.1.0.0',
     'category': 'Human Resources/Employees',
     'summary': 'Quản lý chứng chỉ/bằng cấp nhân viên + theo dõi & cảnh báo hết hạn',
     'description': """
-Chứng chỉ nhân viên (SapiOne Community)
+Chứng chỉ nhân viên (Sapioness Community)
 ========================================
 
 Quản lý chứng chỉ / bằng cấp / giấy phép của nhân viên, đặc biệt phục vụ

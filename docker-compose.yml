@@ -1,14 +1,14 @@
-# SapiOne — local dev stack (PostgreSQL + Odoo 19)
-# Container Odoo: "sapione" · DB: "sapione-db"
+# Sapioness — local dev stack (PostgreSQL + Odoo 19)
+# Container Odoo: "sapiones" · DB: "sapiones-db"
 #
 # Dùng cho phát triển / đánh giá ở LOCAL.
 # Production (VPS): dùng compose riêng + secrets qua .env, KHÔNG dùng mật khẩu mặc định.
-name: sapione
+name: sapiones
 
 services:
   db:
     image: postgres:16
-    container_name: sapione-db
+    container_name: sapiones-db
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: odoo
@@ -24,7 +24,7 @@ services:
 
   odoo:
     image: odoo:19.0
-    container_name: sapione
+    container_name: sapiones
     depends_on:
       db:
         condition: service_healthy

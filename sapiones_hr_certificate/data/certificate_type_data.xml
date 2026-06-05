@@ -2,75 +2,75 @@
 <odoo>
     <data noupdate="1">
         <!-- An toàn lao động -->
-        <record id="ctype_atld" model="sapione.hr.certificate.type">
+        <record id="ctype_atld" model="sapiones.hr.certificate.type">
             <field name="name">An toàn, vệ sinh lao động (ATVSLĐ)</field>
             <field name="code">ATVSLD</field>
             <field name="category">safety</field>
             <field name="default_validity_months">24</field>
             <field name="is_mandatory" eval="True"/>
         </record>
-        <record id="ctype_pccc" model="sapione.hr.certificate.type">
+        <record id="ctype_pccc" model="sapiones.hr.certificate.type">
             <field name="name">Phòng cháy chữa cháy (PCCC)</field>
             <field name="code">PCCC</field>
             <field name="category">safety</field>
             <field name="default_validity_months">24</field>
         </record>
-        <record id="ctype_socapcuu" model="sapione.hr.certificate.type">
+        <record id="ctype_socapcuu" model="sapiones.hr.certificate.type">
             <field name="name">Sơ cấp cứu</field>
             <field name="code">SCC</field>
             <field name="category">safety</field>
             <field name="default_validity_months">24</field>
         </record>
         <!-- Vận hành thiết bị -->
-        <record id="ctype_xenang" model="sapione.hr.certificate.type">
+        <record id="ctype_xenang" model="sapiones.hr.certificate.type">
             <field name="name">Vận hành xe nâng</field>
             <field name="code">XENANG</field>
             <field name="category">operating</field>
             <field name="default_validity_months">60</field>
         </record>
-        <record id="ctype_noihoi" model="sapione.hr.certificate.type">
+        <record id="ctype_noihoi" model="sapiones.hr.certificate.type">
             <field name="name">Vận hành nồi hơi / thiết bị áp lực</field>
             <field name="code">NOIHOI</field>
             <field name="category">operating</field>
             <field name="default_validity_months">60</field>
         </record>
-        <record id="ctype_cautruc" model="sapione.hr.certificate.type">
+        <record id="ctype_cautruc" model="sapiones.hr.certificate.type">
             <field name="name">Vận hành cầu trục / cẩu</field>
             <field name="code">CAUTRUC</field>
             <field name="category">operating</field>
             <field name="default_validity_months">60</field>
         </record>
-        <record id="ctype_andien" model="sapione.hr.certificate.type">
+        <record id="ctype_andien" model="sapiones.hr.certificate.type">
             <field name="name">An toàn điện</field>
             <field name="code">ANDIEN</field>
             <field name="category">operating</field>
             <field name="default_validity_months">12</field>
         </record>
         <!-- Chứng chỉ nghề -->
-        <record id="ctype_han" model="sapione.hr.certificate.type">
+        <record id="ctype_han" model="sapiones.hr.certificate.type">
             <field name="name">Chứng chỉ thợ hàn</field>
             <field name="code">HAN</field>
             <field name="category">professional</field>
             <field name="default_validity_months">36</field>
         </record>
-        <record id="ctype_baotri" model="sapione.hr.certificate.type">
+        <record id="ctype_baotri" model="sapiones.hr.certificate.type">
             <field name="name">Bảo trì cơ điện</field>
             <field name="code">CODIEN</field>
             <field name="category">professional</field>
         </record>
         <!-- Bằng cấp / ngoại ngữ -->
-        <record id="ctype_bangcap" model="sapione.hr.certificate.type">
+        <record id="ctype_bangcap" model="sapiones.hr.certificate.type">
             <field name="name">Bằng tốt nghiệp (CĐ/ĐH)</field>
             <field name="code">BANGCAP</field>
             <field name="category">degree</field>
         </record>
-        <record id="ctype_ngoaingu" model="sapione.hr.certificate.type">
+        <record id="ctype_ngoaingu" model="sapiones.hr.certificate.type">
             <field name="name">Chứng chỉ ngoại ngữ</field>
             <field name="code">NGOAINGU</field>
             <field name="category">language</field>
             <field name="default_validity_months">24</field>
         </record>
-        <record id="ctype_lai_xe" model="sapione.hr.certificate.type">
+        <record id="ctype_lai_xe" model="sapiones.hr.certificate.type">
             <field name="name">Giấy phép lái xe</field>
             <field name="code">GPLX</field>
             <field name="category">other</field>

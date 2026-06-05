@@ -3,7 +3,7 @@ from odoo.exceptions import ValidationError
 
 
 class VnWard(models.Model):
-    _name = 'sapione.vn.ward'
+    _name = 'sapiones.vn.ward'
     _description = 'Phường / Xã (Việt Nam)'
     _order = 'state_id, name'
     _rec_name = 'name'

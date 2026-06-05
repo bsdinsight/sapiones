@@ -2,8 +2,8 @@
 <odoo>
 
     <record id="view_vn_ward_list" model="ir.ui.view">
-        <field name="name">sapione.vn.ward.list</field>
-        <field name="model">sapione.vn.ward</field>
+        <field name="name">sapiones.vn.ward.list</field>
+        <field name="model">sapiones.vn.ward</field>
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>
@@ -14,8 +14,8 @@
     </record>
 
     <record id="view_vn_ward_form" model="ir.ui.view">
-        <field name="name">sapione.vn.ward.form</field>
-        <field name="model">sapione.vn.ward</field>
+        <field name="name">sapiones.vn.ward.form</field>
+        <field name="model">sapiones.vn.ward</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
@@ -31,8 +31,8 @@
     </record>
 
     <record id="view_vn_ward_search" model="ir.ui.view">
-        <field name="name">sapione.vn.ward.search</field>
-        <field name="model">sapione.vn.ward</field>
+        <field name="name">sapiones.vn.ward.search</field>
+        <field name="model">sapiones.vn.ward</field>
         <field name="arch" type="xml">
             <search>
                 <field name="name"/>
@@ -45,7 +45,7 @@
 
     <record id="action_vn_ward" model="ir.actions.act_window">
         <field name="name">Phường / Xã</field>
-        <field name="res_model">sapione.vn.ward</field>
+        <field name="res_model">sapiones.vn.ward</field>
         <field name="view_mode">list,form</field>
     </record>
 

@@ -1,8 +1,8 @@
 # Sapiones
 
-**Phần mềm Quản trị Nhân sự & Tiền lương (HRM/HCM) cho doanh nghiệp sản xuất Việt Nam — đúng luật, trên nền Odoo.**
+**Phần mềm Quản trị Nhân sự (HRM/HCM) cho doanh nghiệp Việt Nam — đúng luật, trên nền Odoo.**
 
-*Open-core HR & Payroll for Vietnamese manufacturers, built on Odoo.*
+*Open-core HR for Vietnamese businesses, built on Odoo.*
 
 Phát triển trên [Odoo](https://www.odoo.com) Community 19, bởi [BSD](https://bsdinsight.com).
 
@@ -12,7 +12,7 @@ Phát triển trên [Odoo](https://www.odoo.com) Community 19, bởi [BSD](https
 
 ## Sapiones là gì?
 
-Bộ giải pháp HRM/HCM cho doanh nghiệp **sản xuất** Việt Nam (may mặc, cơ khí, điện tử, chế biến…): quản lý lao động số lượng lớn, **ca kíp**, **tính lương phức tạp** — đúng pháp luật lao động & thuế Việt Nam. Triển khai **on-premise** (chủ quyền dữ liệu, tích hợp máy chấm công trong mạng nhà máy) hoặc cloud.
+Nền tảng HRM/HCM cho **mọi doanh nghiệp** Việt Nam: tính lương đúng luật (BHXH, thuế TNCN), chấm công, kê khai điện tử, cổng nhân viên, tuyển dụng, đánh giá, đào tạo, kho tri thức + AI, báo cáo. Trên nền đó là các **phiên bản chuyên ngành** đi sâu từng lĩnh vực — **bắt đầu với Sản xuất** (ca kíp, máy chấm công, lương sản phẩm, ATLĐ). Triển khai **on-premise** (chủ quyền dữ liệu) hoặc cloud.
 
 Định hướng dài hạn: đạt độ sâu chức năng của Workday / SAP SuccessFactors / Oracle HCM, nhưng tối ưu cho bối cảnh và pháp luật Việt Nam.
 

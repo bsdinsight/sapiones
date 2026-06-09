@@ -1,5 +1,7 @@
 import re
 
+from dateutil.relativedelta import relativedelta
+
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 
@@ -28,6 +30,19 @@ class HrEmployee(models.Model):
     vn_hometown = fields.Char(string='Quê quán', groups='hr.group_hr_user')
     vn_ethnicity = fields.Char(string='Dân tộc', groups='hr.group_hr_user')
     vn_religion = fields.Char(string='Tôn giáo', groups='hr.group_hr_user')
+
+    # --- Người nước ngoài ---
+    is_foreigner = fields.Boolean(string='Người nước ngoài', groups='hr.group_hr_user')
+    tax_residency = fields.Selection([
+        ('resident', 'Cá nhân cư trú'),
+        ('non_resident', 'Không cư trú'),
+    ], string='Tình trạng cư trú (thuế)', default='resident', groups='hr.group_hr_user',
+        help='Cư trú (≥183 ngày/năm hoặc có nơi ở thường xuyên): thuế lũy tiến + giảm trừ gia cảnh. '
+             'Không cư trú: thuế suất 20% cố định, không giảm trừ.')
+    vn_passport = fields.Char(string='Số hộ chiếu', groups='hr.group_hr_user')
+    vn_work_permit_no = fields.Char(string='Số giấy phép lao động', groups='hr.group_hr_user')
+    vn_work_permit_expiry = fields.Date(string='GPLĐ hết hạn', groups='hr.group_hr_user')
+    vn_visa_expiry = fields.Date(string='Visa / Thẻ tạm trú hết hạn', groups='hr.group_hr_user')
 
     # --- Địa chỉ riêng theo chuẩn VN (Phường/Xã) ---
     private_country_id = fields.Many2one(
@@ -75,3 +90,34 @@ class HrEmployee(models.Model):
     def _onchange_private_state_clear_ward(self):
         if self.private_vn_ward_id and self.private_vn_ward_id.state_id != self.private_state_id:
             self.private_vn_ward_id = False
+
+    @api.model
+    def _cron_foreign_permit_reminder(self):
+        """Tạo việc cần làm cho GPLĐ / visa của người nước ngoài sắp hết hạn (idempotent)."""
+        today = fields.Date.today()
+        limit = today + relativedelta(days=60)
+        admin = self.env.ref('base.user_admin', raise_if_not_found=False)
+        emps = self.search(['|', ('vn_work_permit_expiry', '!=', False),
+                            ('vn_visa_expiry', '!=', False)])
+        created = 0
+        for emp in emps:
+            for label, deadline in (('Giấy phép lao động', emp.vn_work_permit_expiry),
+                                    ('Visa/Thẻ tạm trú', emp.vn_visa_expiry)):
+                if not deadline or deadline > limit:
+                    continue
+                exists = self.env['mail.activity'].search_count([
+                    ('res_model', '=', self._name), ('res_id', '=', emp.id),
+                    ('summary', 'like', label)])
+                if exists:
+                    continue
+                user = emp.parent_id.user_id or emp.user_id or admin
+                if not user:
+                    continue
+                emp.activity_schedule(
+                    'mail.mail_activity_data_todo', date_deadline=deadline,
+                    summary=_('%(l)s sắp hết hạn: %(e)s', l=label, e=emp.name),
+                    note=_('%(l)s của %(e)s hết hạn ngày %(d)s — cần gia hạn để tránh vi phạm.',
+                           l=label, e=emp.name, d=deadline),
+                    user_id=user.id)
+                created += 1
+        return created

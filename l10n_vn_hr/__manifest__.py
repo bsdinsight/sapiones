@@ -26,6 +26,7 @@ Phát triển bởi BSD — https://bsdinsight.com
     'depends': ['hr', 'l10n_vn_address'],
     'data': [
         'security/ir.model.access.csv',
+        'data/foreign_data.xml',
         'views/hr_employee_dependent_views.xml',
         'views/hr_employee_views.xml',
     ],

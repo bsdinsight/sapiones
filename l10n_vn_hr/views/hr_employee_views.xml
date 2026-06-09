@@ -25,6 +25,15 @@
                             <field name="vn_religion"/>
                         </group>
                     </group>
+                    <group string="Người nước ngoài">
+                        <field name="is_foreigner"/>
+                        <field name="country_id" string="Quốc tịch" invisible="not is_foreigner"/>
+                        <field name="tax_residency" invisible="not is_foreigner"/>
+                        <field name="vn_passport" invisible="not is_foreigner"/>
+                        <field name="vn_work_permit_no" invisible="not is_foreigner"/>
+                        <field name="vn_work_permit_expiry" invisible="not is_foreigner"/>
+                        <field name="vn_visa_expiry" invisible="not is_foreigner"/>
+                    </group>
                     <separator string="Người phụ thuộc (giảm trừ gia cảnh)"/>
                     <field name="dependent_ids">
                         <list editable="bottom">

@@ -39,9 +39,6 @@ class HrEmployee(models.Model):
     vn_ethnicity = fields.Char(string='Dân tộc', groups='hr.group_hr_user')
     vn_religion = fields.Char(string='Tôn giáo', groups='hr.group_hr_user')
 
-    # --- Đổi nhãn field lõi Odoo cho đúng nghiệp vụ VN (ẩn trong view, dùng field vn_* ở trên) ---
-    ssnid = fields.Char(string='Số sổ BHXH')
-
     # --- Người nước ngoài ---
     is_foreigner = fields.Boolean(string='Người nước ngoài', groups='hr.group_hr_user')
     tax_residency = fields.Selection([

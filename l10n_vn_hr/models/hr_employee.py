@@ -11,8 +11,8 @@ class HrEmployee(models.Model):
 
     # --- Giấy tờ tùy thân ---
     vn_id_card = fields.Char(
-        string='Số CCCD/CMND', groups='hr.group_hr_user',
-        help='Căn cước công dân (12 số) hoặc CMND cũ (9 số).')
+        string='Số định danh / CCCD', groups='hr.group_hr_user',
+        help='Số định danh cá nhân (căn cước 12 số) hoặc CMND cũ (9 số).')
     vn_id_card_date = fields.Date(
         string='Ngày cấp', groups='hr.group_hr_user')
     vn_id_card_place = fields.Char(
@@ -25,11 +25,22 @@ class HrEmployee(models.Model):
     vn_si_code = fields.Char(
         string='Số sổ BHXH', groups='hr.group_hr_user',
         help='Số sổ bảo hiểm xã hội (10 chữ số).')
+    vn_health_insurance_no = fields.Char(
+        string='Số thẻ BHYT', groups='hr.group_hr_user',
+        help='Số thẻ bảo hiểm y tế.')
 
-    # --- Thông tin khác ---
+    # --- Phân loại & Thông tin khác ---
+    vn_work_block = fields.Selection([
+        ('office', 'Khối văn phòng'),
+        ('production', 'Khối sản xuất'),
+    ], string='Khối công tác', groups='hr.group_hr_user',
+        help='Phân loại nhân viên theo khối để lọc/nhóm danh sách & báo cáo.')
     vn_hometown = fields.Char(string='Quê quán', groups='hr.group_hr_user')
     vn_ethnicity = fields.Char(string='Dân tộc', groups='hr.group_hr_user')
     vn_religion = fields.Char(string='Tôn giáo', groups='hr.group_hr_user')
+
+    # --- Đổi nhãn field lõi Odoo cho đúng nghiệp vụ VN (ẩn trong view, dùng field vn_* ở trên) ---
+    ssnid = fields.Char(string='Số sổ BHXH')
 
     # --- Người nước ngoài ---
     is_foreigner = fields.Boolean(string='Người nước ngoài', groups='hr.group_hr_user')
@@ -69,7 +80,7 @@ class HrEmployee(models.Model):
     def _check_vn_id_card(self):
         for emp in self:
             if emp.vn_id_card and not re.fullmatch(r'\d{9}|\d{12}', emp.vn_id_card.strip()):
-                raise ValidationError(_('Số CCCD/CMND phải gồm 9 (CMND) hoặc 12 (CCCD) chữ số.'))
+                raise ValidationError(_('Số định danh / CCCD phải gồm 9 (CMND) hoặc 12 (CCCD) chữ số.'))
 
     @api.constrains('vn_tax_code')
     def _check_vn_tax_code(self):

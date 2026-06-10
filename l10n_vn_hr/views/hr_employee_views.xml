@@ -17,9 +17,11 @@
                         <group string="Thuế &amp; Bảo hiểm">
                             <field name="vn_tax_code"/>
                             <field name="vn_si_code"/>
+                            <field name="vn_health_insurance_no"/>
                             <field name="dependent_count"/>
                         </group>
                         <group string="Thông tin khác">
+                            <field name="vn_work_block"/>
                             <field name="vn_hometown"/>
                             <field name="vn_ethnicity"/>
                             <field name="vn_religion"/>
@@ -48,6 +50,13 @@
                     </field>
                 </page>
             </xpath>
+            <!-- Ẩn field lõi trùng lặp: SSN ("Số an sinh xã hội") & Identification No -->
+            <field name="ssnid" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="identification_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
         </field>
     </record>
 
@@ -66,6 +75,20 @@
                            domain="[('state_id', '=', private_state_id)]" options="{'no_create': True}"/>
                     <field name="private_street" string="Địa chỉ" placeholder="Số nhà, tên đường..."/>
                 </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Tìm kiếm & nhóm nhân viên theo Khối công tác -->
+    <record id="view_employee_filter_vn" model="ir.ui.view">
+        <field name="name">hr.employee.search.vn</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field name="vn_work_block"/>
+                <filter name="g_vn_work_block" string="Khối công tác"
+                        context="{'group_by': 'vn_work_block'}"/>
             </xpath>
         </field>
     </record>

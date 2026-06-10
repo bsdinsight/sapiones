@@ -16,15 +16,15 @@ Nền tảng HRM/HCM cho **mọi doanh nghiệp** Việt Nam: tính lương đú
 
 Định hướng dài hạn: đạt độ sâu chức năng của Workday / SAP SuccessFactors / Oracle HCM, nhưng tối ưu cho bối cảnh và pháp luật Việt Nam.
 
-## Mô hình Open-Core — Miễn phí tới 30 nhân viên
+## Mô hình Open-Core — Miễn phí tới 20 nhân viên
 
 Sapiones theo mô hình **open-core**:
 
 - 🟢 **Mã nguồn mở (repo này, LGPL-3):** bản địa hóa hồ sơ nhân sự VN, đơn vị hành chính 2025, chứng chỉ — miễn phí, không giới hạn.
 - 🔵 **Bản thương mại (Professional / Enterprise, by BSD):** tính lương, ca kíp & tăng ca, kê khai điện tử, cổng nhân viên, KPI/OKR, đào tạo & ATLĐ, kho tri thức + AI…
 
-> 💡 **Dùng MIỄN PHÍ toàn bộ tính năng tới 30 nhân viên đang hoạt động — không giới hạn thời gian.**
-> Khi vượt 30 nhân viên → bản quyền theo số lao động (liên hệ BSD). Phần mã nguồn mở luôn chạy không giới hạn.
+> 💡 **Dùng MIỄN PHÍ toàn bộ tính năng tới 20 nhân viên đang hoạt động — không giới hạn thời gian.**
+> Khi vượt 20 nhân viên → bản quyền theo số lao động (liên hệ BSD). Phần mã nguồn mở luôn chạy không giới hạn.
 
 ## Module trong repo này (🟢 mã nguồn mở · LGPL-3)
 

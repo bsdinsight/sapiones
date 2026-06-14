@@ -273,6 +273,34 @@ for i, (name, sex, job, dk, wage, night_shift) in enumerate(STAFF, 1):
         log("NV", name, ex)
 log("✓ +%d nhân viên nhà máy (phiếu lương + chấm công)" % nnv)
 
+# ── Sinh thêm công nhân may cho đủ 50 NV ─────────────────
+SUR = ['Nguyễn', 'Trần', 'Lê', 'Phạm', 'Hoàng', 'Phan', 'Vũ', 'Đặng', 'Bùi', 'Đỗ', 'Hồ', 'Ngô',
+       'Dương', 'Lý', 'Đinh', 'Mai', 'Tô', 'Trịnh', 'Cao', 'Đoàn', 'Vương', 'Hà', 'Tạ', 'Chu',
+       'Kiều', 'Thái', 'Lâm', 'Trương', 'Lưu', 'Đào']
+GF = ['Hoa', 'Lan', 'Mai', 'Hồng', 'Thu', 'Nga', 'Hà', 'Yến', 'Bích', 'Diệu', 'Hằng', 'Loan', 'Thảo',
+      'Trang', 'Linh', 'Vân', 'Huệ', 'Nhung', 'Oanh', 'Phượng', 'Quỳnh', 'Tâm', 'Uyên', 'Xuân', 'Kim', 'Như', 'Thúy']
+GM = ['Tú', 'Dũng', 'Hải', 'Nam', 'Khoa', 'Long', 'Sơn', 'Phúc', 'Thành', 'Cường', 'Đạt', 'Hùng', 'Khánh',
+      'Lâm', 'Phong', 'Quân', 'Sang', 'Tài', 'Trung', 'Vinh', 'An', 'Bảo', 'Đức', 'Kiên', 'Lộc', 'Mạnh', 'Nghĩa']
+MAYS = ['may1', 'may2', 'may3', 'may4']
+need = max(0, 50 - HR.search_count([]))
+ng = 0
+for n in range(need):
+    k = len(STAFF) + n + 1
+    female = (n % 3 != 0)  # ~2/3 nữ (đặc thù ngành may)
+    giv_list = GF if female else GM
+    name = '%s %s %s' % (SUR[n % len(SUR)], 'Thị' if female else 'Văn', giv_list[n % len(giv_list)])
+    wage = 6000000 + (n % 6) * 100000
+    try:
+        e = mk_emp(name, 'NV%04d' % k, 'NV-%04d' % k, 'female' if female else 'male',
+                   'Công nhân may', dmap[MAYS[n % 4]], wage, '09%08d' % (10000000 + k))
+        ot = [0, 6, 12][n % 3]
+        mk_payslip(e, wage, piece=int(wage * 0.4), allow_tax=1500000, ot=ot, night=0)
+        mk_attendance(e, ot=ot)
+        ng += 1
+    except Exception as ex:
+        log("genNV", name, ex)
+log("✓ +%d công nhân (tổng %d NV)" % (ng, HR.search_count([])))
+
 # Đăng nhập demo CÔNG KHAI: login=demo / password=demo (khớp landing sapiones.com)
 try:
     admin = env.ref('base.user_admin', raise_if_not_found=False)

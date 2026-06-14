@@ -1,9 +1,38 @@
 [options]
-; Sapiones - cấu hình Odoo PRODUCTION (mẫu).
-; Trên VPS: cp deploy/odoo.conf.example deploy/odoo.conf, rồi đặt admin_passwd mạnh.
-admin_passwd = CHANGE_ME_STRONG
+; Sapiones — cấu hình Odoo PRODUCTION (mẫu, MULTI-TENANT hosted trên VPS).
+; Trên VPS: cp deploy/odoo.conf.example deploy/odoo.conf, đặt admin_passwd mạnh,
+;           chmod 644 deploy/odoo.conf (container user 'odoo' phải đọc được).
 addons_path = /mnt/extra-addons,/mnt/enterprise-addons,/usr/lib/python3/dist-packages/odoo/addons
-proxy_mode = True
+data_dir = /var/lib/odoo
+
+; ── Kết nối DB ──────────────────────────────────────────────────────────
+; db_host + db_user non-secret, để ở đây để `docker compose exec odoo odoo ...`
+; (lệnh cài/upgrade/clone one-off) kết nối được mà không phụ thuộc entrypoint env
+; (entrypoint chỉ dịch env cho process chính của server, không cho process exec).
+; db_password VẪN tiêm qua PASSWORD env từ .env — KHÔNG để trong repo.
+db_host = db
+db_port = 5432
+db_user = odoo
+
+; ── Master password cho /web/database/manager. ĐỔI trước lần chạy đầu. ──
+admin_passwd = CHANGE_ME_STRONG_MASTER_PASSWORD
+
+; ── Route nhiều DB theo subdomain (mỗi khách = 1 DB) ──
+;   412345.sapiones.com → DB "412345"
+;   congtyabc.sapiones.com → DB "congtyabc"
+;   (subdomain PHẢI trùng tên DB; provisioning đảm bảo điều này)
+dbfilter = ^%d$
 list_db = False
-dbfilter = ^sapiones$
-; DB host/user/password lấy từ biến môi trường (docker-compose.vps.yml + .env)
+
+; ── Sau Cloudflare Tunnel — tin X-Forwarded-* headers ──
+proxy_mode = True
+
+; ── Workers (VPS chia sẻ RAM với các sản phẩm khác) ──
+workers = 2
+max_cron_threads = 1
+limit_memory_soft = 671088640
+limit_memory_hard = 805306368
+limit_time_cpu = 600
+limit_time_real = 1200
+
+log_level = info

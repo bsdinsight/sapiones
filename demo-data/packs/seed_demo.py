@@ -223,6 +223,15 @@ for e2, w, p, a, o, n in [(minh, 16000000, 0, 2500000, 0, 0), (mgr, 11000000, 0,
     except Exception as ex: log("att", e2.name, ex)
 log("✓ phiếu lương + chấm công cho Minh & Bình")
 
+# Đăng nhập demo CÔNG KHAI: login=demo / password=demo (khớp landing sapiones.com)
+try:
+    admin = env.ref('base.user_admin', raise_if_not_found=False)
+    if admin:
+        admin.write({'login': 'demo', 'password': 'demo'})
+        log("✓ đăng nhập demo: demo / demo")
+except Exception as e:
+    log("set login demo:", e)
+
 env.cr.commit()
-print("\n✅ SEED DEMO XONG — %d nhân viên, có phiếu lương/chấm công/nghỉ phép/công việc/đánh giá."
+print("\n✅ SEED DEMO XONG — %d nhân viên; đăng nhập demo/demo; có phiếu lương/chấm công/nghỉ phép/công việc/đánh giá."
       % HR.search_count([]))

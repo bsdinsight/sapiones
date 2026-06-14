@@ -6,7 +6,7 @@ Mô hình: **BSD host sẵn trên VPS**, khách đăng ký → tự tạo DB →
 
 ```
 <khach>.sapiones.com ──CF proxy──> CF Tunnel ──ingress *──> odoo:8069 ──dbfilter──> DB "<khach>"
-api.sapiones.com    ──CF proxy──> CF Tunnel ──ingress────> <BIND_HOST>:8088 (provision-api trên host)
+register.sapiones.com    ──CF proxy──> CF Tunnel ──ingress────> <BIND_HOST>:8088 (provision-api trên host)
 ```
 
 ## 0. Chuẩn bị
@@ -39,11 +39,11 @@ docker compose -f docker-compose.vps.yml --profile tunnel up -d
 ```
 3. **Public hostnames (ingress)** của tunnel:
    - `*.sapiones.com` → Service `http://odoo:8069`  ← wildcard ingress, mọi tenant dùng chung 1 route
-   - `api.sapiones.com` → Service `http://<BIND_HOST>:8088`  ← provision-api (host)
+   - `register.sapiones.com` → Service `http://<BIND_HOST>:8088`  ← provision-api (host)
    > ⚠️ Wildcard ingress chỉ match khi cloudflared MỚI. Nếu trả 404 (server: cloudflare):
    > `docker compose --profile tunnel pull cloudflared && up -d --force-recreate cloudflared`
    > (force-recreate KHÔNG tự pull image!)
-4. **DNS**: tạo proxied CNAME `api.sapiones.com → <tunnel-uuid>.cfargotunnel.com`. Subdomain
+4. **DNS**: tạo proxied CNAME `register.sapiones.com → <tunnel-uuid>.cfargotunnel.com`. Subdomain
    tenant `<id>.sapiones.com` thì provision-api **tự tạo** qua CF API (gói Free không proxy
    được wildcard DNS — phải tạo từng record; ingress wildcard thì OK mọi gói).
 5. **SSL**: Universal SSL phủ apex + **1 cấp** wildcard → `<id>.sapiones.com` OK. ĐỪNG dùng 2 cấp.

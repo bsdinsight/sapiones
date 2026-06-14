@@ -30,15 +30,15 @@ ufw allow from 172.18.0.0/16 to any port 8088 proto tcp
 ```
 
 ## Cloudflare
-- Tunnel **ingress** thêm route `api.sapiones.com → http://<BIND_HOST>:8088` (api chạy trên host)
+- Tunnel **ingress** thêm route `register.sapiones.com → http://<BIND_HOST>:8088` (api chạy trên host)
   và route `*.sapiones.com → http://odoo:8069` (wildcard ingress — mọi gói đều dùng được).
-- DNS: tạo proxied CNAME `api.sapiones.com → <tunnel-uuid>.cfargotunnel.com`. Mỗi tenant,
+- DNS: tạo proxied CNAME `register.sapiones.com → <tunnel-uuid>.cfargotunnel.com`. Mỗi tenant,
   app tự tạo CNAME `<id>.sapiones.com` qua CF API (token Zone.DNS:Edit cho sapiones.com).
 
 ## Test
 ```bash
 curl -s http://<BIND_HOST>:8088/v1/health
-curl -s -X POST https://api.sapiones.com/v1/register/start \
+curl -s -X POST https://register.sapiones.com/v1/register/start \
   -H 'Content-Type: application/json' \
   -d '{"email":"ban@congty.vn","name":"Chị Lan","company":"Công ty May ABC"}'
 ```

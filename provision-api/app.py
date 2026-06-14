@@ -6,7 +6,7 @@ Khớp contract của form đăng ký trên sapiones.com/dang-ky (BSD Website):
   POST /v1/register/verify {request_id,code,password}          → {ok,tenant_id,url}
 
 Chạy TRÊN HOST của VPS (không trong container) để gọi được `docker compose ...`
-qua demo-data/packs/provision.sh. Cloudflare Tunnel: api.sapiones.com → BIND_HOST:PORT.
+qua demo-data/packs/provision.sh. Cloudflare Tunnel: register.sapiones.com → BIND_HOST:PORT.
 Cấu hình SMTP + repo path + CF token qua biến môi trường (xem .env.example) — KHÔNG hardcode creds.
 """
 import os

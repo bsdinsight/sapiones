@@ -41,6 +41,9 @@ shift_sang = env['sapiones.shift'].sudo().search([('code', '=', 'CA-S')], limit=
 
 HR = env['hr.employee'].sudo()
 
+# Demo: nới hạn mức nhân viên (free mặc định 20) để demo có nhiều NV + tính lương được.
+env['ir.config_parameter'].sudo().set_param('sapiones_license.free_seats', '100')
+
 
 def mk_emp(name, barcode, idid, sex, job, dept, wage, phone, **extra):
     emp = HR.search([('barcode', '=', barcode)], limit=1)
@@ -222,6 +225,53 @@ for e2, w, p, a, o, n in [(minh, 16000000, 0, 2500000, 0, 0), (mgr, 11000000, 0,
     try: mk_attendance(e2, ot=o)
     except Exception as ex: log("att", e2.name, ex)
 log("✓ phiếu lương + chấm công cho Minh & Bình")
+
+# ── Nhà máy: phòng ban kiểu xưởng may + 20 nhân viên ─────
+DEPTS = {
+    'gd': 'Ban Giám đốc', 'hr': 'Phòng Nhân sự', 'kt': 'Phòng Kế toán',
+    'cat': 'Xưởng A · Tổ Cắt', 'may1': 'Xưởng A · Chuyền may 1', 'may2': 'Xưởng A · Chuyền may 2',
+    'may4': 'Xưởng B · Chuyền may 4', 'ht': 'Tổ Hoàn thiện (là · đóng gói)',
+    'qc': 'Tổ QC · Kiểm soát chất lượng', 'cd': 'Tổ Cơ điện · Bảo trì', 'kho': 'Kho Nguyên phụ liệu',
+}
+dmap = {k: ensure('hr.department', [('name', '=', v)], {'name': v}) for k, v in DEPTS.items()}
+dmap['may3'] = dept_xuong  # Chuyền may 3 · Xưởng A (đã có)
+
+STAFF = [
+    # (tên, sex, chức danh, dept_key, lương, ca_đêm)
+    ('Phạm Thị Lan', 'female', 'Công nhân may', 'may1', 6200000, False),
+    ('Hoàng Văn Tú', 'male', 'Công nhân cắt', 'cat', 6800000, False),
+    ('Trần Thị Mai', 'female', 'Nhân viên QC', 'qc', 7500000, False),
+    ('Lê Thị Hồng', 'female', 'Công nhân may', 'may1', 6300000, False),
+    ('Nguyễn Văn Dũng', 'male', 'Kỹ thuật viên cơ điện', 'cd', 9500000, True),
+    ('Vũ Thị Thu', 'female', 'Công nhân may', 'may2', 6100000, False),
+    ('Đặng Văn Hải', 'male', 'Thủ kho', 'kho', 8000000, False),
+    ('Bùi Thị Nga', 'female', 'Công nhân hoàn thiện', 'ht', 6000000, False),
+    ('Phan Thị Hà', 'female', 'Công nhân may', 'may2', 6400000, True),
+    ('Đỗ Văn Nam', 'male', 'Tổ phó chuyền may', 'may4', 9000000, False),
+    ('Ngô Thị Yến', 'female', 'Công nhân may', 'may4', 6250000, False),
+    ('Dương Văn Khoa', 'male', 'Nhân viên QC', 'qc', 7300000, False),
+    ('Lý Thị Bích', 'female', 'Công nhân hoàn thiện', 'ht', 6050000, False),
+    ('Trịnh Văn Long', 'male', 'Công nhân cắt', 'cat', 6900000, False),
+    ('Hồ Thị Diệu', 'female', 'Công nhân may', 'may3', 6350000, True),
+    ('Cao Văn Sơn', 'male', 'Nhân viên kế toán', 'kt', 13000000, False),
+    ('Đinh Thị Hằng', 'female', 'Chuyên viên nhân sự', 'hr', 12000000, False),
+    ('Mai Văn Phúc', 'male', 'Công nhân may', 'may1', 6150000, False),
+    ('Tô Thị Loan', 'female', 'Công nhân may', 'may2', 6200000, False),
+    ('Đoàn Văn Thành', 'male', 'Giám đốc sản xuất', 'gd', 22000000, False),
+]
+nnv = 0
+for i, (name, sex, job, dk, wage, night_shift) in enumerate(STAFF, 1):
+    try:
+        e = mk_emp(name, 'NV%04d' % i, 'NV-%04d' % i, sex, job, dmap[dk], wage, '09%08d' % (10000000 + i))
+        ot = [0, 6, 12, 18][i % 4]
+        night = 24 if night_shift else 0
+        piece = int(wage * 0.4) if ('may' in job.lower() or 'cắt' in job.lower()) else 0
+        mk_payslip(e, wage, piece=piece, allow_tax=(1500000 if piece else 2000000), ot=ot, night=night)
+        mk_attendance(e, ot=ot, night=night)
+        nnv += 1
+    except Exception as ex:
+        log("NV", name, ex)
+log("✓ +%d nhân viên nhà máy (phiếu lương + chấm công)" % nnv)
 
 # Đăng nhập demo CÔNG KHAI: login=demo / password=demo (khớp landing sapiones.com)
 try:

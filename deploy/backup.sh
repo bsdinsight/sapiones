@@ -51,12 +51,15 @@ for db in $DBS; do
   find "$BACKUP_DIR/$db" -maxdepth 1 -type f \( -name '*.dump' -o -name '*-filestore.tar.gz' \) -mtime +"$KEEP_DAYS" -delete 2>/dev/null || true
 done
 
-# Đẩy offsite (nếu cấu hình rclone).
+# Đẩy offsite (nếu cấu hình rclone) — CHỈ các DB Sapiones, KHÔNG đụng backup của
+# stack khác dùng chung /root/backups (bsdinsight/staging…). Đẩy theo từng thư mục DB.
 if [ -n "$RCLONE_REMOTE" ]; then
   if command -v rclone >/dev/null 2>&1; then
     log "Đẩy offsite → $RCLONE_REMOTE/$DAY"
-    rclone copy "$BACKUP_DIR" "$RCLONE_REMOTE/$DAY" --transfers 4 --no-traverse
-    # Dọn offsite cũ hơn KEEP_DAYS ngày.
+    for db in $DBS; do
+      rclone copy "$BACKUP_DIR/$db" "$RCLONE_REMOTE/$DAY/$db" --transfers 4 --no-traverse
+    done
+    # Dọn offsite cũ hơn KEEP_DAYS ngày (bucket dành riêng cho Sapiones).
     rclone delete "$RCLONE_REMOTE" --min-age "${KEEP_DAYS}d" --rmdirs 2>/dev/null || true
   else
     log "CẢNH BÁO: RCLONE_REMOTE đặt nhưng chưa cài rclone — bỏ qua offsite"

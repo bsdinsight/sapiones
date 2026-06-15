@@ -93,9 +93,12 @@
         </field>
     </record>
 
-    <!-- Mặc định mở danh sách Nhân viên ở dạng LIST (thay vì kanban) — hợp DN đông NV. -->
+    <!-- Mặc định mở danh sách Nhân viên ở dạng LIST (thay vì kanban) — hợp DN đông NV.
+         HR gốc gắn view_ids với kanban seq nhỏ nhất → đè view_mode. Clear view_ids để
+         view_mode (list trước) quyết định view mặc định. -->
     <record id="hr.open_view_employee_list_my" model="ir.actions.act_window">
         <field name="view_mode">list,kanban,form,activity,graph,pivot</field>
+        <field name="view_ids" eval="[(5, 0, 0)]"/>
     </record>
 
 </odoo>

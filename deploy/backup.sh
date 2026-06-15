@@ -45,8 +45,11 @@ for db in $DBS; do
 done
 log "Đã backup $n DB → $BACKUP_DIR"
 
-# Dọn bản cũ cục bộ.
-find "$BACKUP_DIR" -type f \( -name '*.dump' -o -name '*-filestore.tar.gz' \) -mtime +"$KEEP_DAYS" -delete 2>/dev/null || true
+# Dọn bản cũ cục bộ — CHỈ trong thư mục các DB script này quản lý.
+# (/root/backups có thể dùng chung với hệ thống backup khác — KHÔNG quét toàn bộ.)
+for db in $DBS; do
+  find "$BACKUP_DIR/$db" -maxdepth 1 -type f \( -name '*.dump' -o -name '*-filestore.tar.gz' \) -mtime +"$KEEP_DAYS" -delete 2>/dev/null || true
+done
 
 # Đẩy offsite (nếu cấu hình rclone).
 if [ -n "$RCLONE_REMOTE" ]; then

@@ -1,0 +1,10 @@
+[Unit]
+Description=Sapiones nightly backup (pg_dump + filestore, optional offsite)
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+# backup.env (gitignored) đặt BACKUP_DIR / KEEP_DAYS / RCLONE_REMOTE — '-' = không bắt buộc.
+EnvironmentFile=-/root/sapiones/deploy/backup.env
+ExecStart=/root/sapiones/deploy/backup.sh

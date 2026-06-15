@@ -41,3 +41,4 @@ odoo.conf
 /private/
 *.internal.md
 feature-tiering.md
+deploy/backup.env

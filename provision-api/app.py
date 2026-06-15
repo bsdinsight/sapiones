@@ -97,6 +97,30 @@ def _send_code(to: str, name: str, code: str):
         s.send_message(msg)
 
 
+def _send_welcome(to: str, name: str, company: str, url: str):
+    """Email chào mừng sau khi tạo tenant — để khách KHÔNG mất địa chỉ workspace."""
+    msg = EmailMessage()
+    msg['Subject'] = 'Sapiones — Workspace của %s đã sẵn sàng' % (company or 'bạn')
+    msg['From'] = MAIL_FROM
+    msg['To'] = to
+    msg.set_content(
+        "Xin chào %s,\n\n"
+        "Workspace Sapiones cho \"%s\" đã được tạo xong và sẵn sàng sử dụng:\n\n"
+        "  Địa chỉ:   %s\n"
+        "  Đăng nhập: %s\n"
+        "  Mật khẩu:  mật khẩu bạn đã đặt khi đăng ký\n\n"
+        "Mở địa chỉ trên, đăng nhập và bắt đầu thêm nhân viên đầu tiên.\n"
+        "Hãy LƯU email này để không quên địa chỉ workspace của bạn.\n\n"
+        "Cần hỗ trợ? Vui lòng liên hệ đội ngũ Sapiones (BSD).\n\n— Sapiones"
+        % (name or 'bạn', company or 'bạn', url, to))
+    ctx = ssl.create_default_context()
+    with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=20) as s:
+        s.ehlo()
+        s.starttls(context=ctx)
+        s.login(SMTP_USER, SMTP_PASS)
+        s.send_message(msg)
+
+
 def _create_tenant_dns(tenant_id: str) -> bool:
     """Tạo proxied CNAME <id>.sapiones.com → tunnel (Free plan không proxy wildcard).
     Trả True nếu tạo được / đã tồn tại; False nếu thiếu config hoặc lỗi."""
@@ -228,6 +252,10 @@ def register_verify(body: VerifyIn):
         return _err(500, 'provision_failed', 'Lỗi tạo tài khoản, vui lòng liên hệ hỗ trợ.')
 
     dns_ok = _create_tenant_dns(tid)
+    url = 'https://%s.%s' % (tid, BASE_DOMAIN)
+    try:
+        _send_welcome(r['email'], r['name'], r['company'], url)
+    except Exception as e:
+        print("WELCOME_MAIL_FAILED:", repr(e), flush=True)  # tenant đã tạo — không chặn
     _REQ.pop(body.request_id, None)
-    return {'ok': True, 'tenant_id': tid,
-            'url': 'https://%s.%s' % (tid, BASE_DOMAIN), 'dns_ok': dns_ok}
+    return {'ok': True, 'tenant_id': tid, 'url': url, 'dns_ok': dns_ok}

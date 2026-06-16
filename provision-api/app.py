@@ -259,3 +259,98 @@ def register_verify(body: VerifyIn):
         print("WELCOME_MAIL_FAILED:", repr(e), flush=True)  # tenant đã tạo — không chặn
     _REQ.pop(body.request_id, None)
     return {'ok': True, 'tenant_id': tid, 'url': url, 'dns_ok': dns_ok}
+
+
+# ── Quên mật khẩu (đặt lại qua OTP email — vì mail server tenant đã neutralize) ──
+_TENANT_ID_RE = re.compile(r'^[a-z0-9][a-z0-9-]{2,30}$')
+_RESET = {}   # request_id -> {tenant_id, email, code, exp, tries}
+
+
+def _send_reset_code(to: str, code: str):
+    msg = EmailMessage()
+    msg['Subject'] = 'Sapiones — Mã đặt lại mật khẩu: %s' % code
+    msg['From'] = MAIL_FROM
+    msg['To'] = to
+    msg.set_content(
+        "Mã đặt lại mật khẩu Sapiones của bạn là: %s\n"
+        "Mã hết hạn sau %d phút.\n\n"
+        "Nếu bạn không yêu cầu, hãy bỏ qua email này.\n\n— Sapiones"
+        % (code, CODE_TTL // 60))
+    ctx = ssl.create_default_context()
+    with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=20) as s:
+        s.ehlo()
+        s.starttls(context=ctx)
+        s.login(SMTP_USER, SMTP_PASS)
+        s.send_message(msg)
+
+
+class ResetStartIn(BaseModel):
+    tenant_id: str      # mã workspace (subdomain), vd "265525"
+    email: str
+
+
+class ResetVerifyIn(BaseModel):
+    request_id: str
+    code: str
+    password: str = ''
+
+
+@app.post('/v1/reset/start')
+def reset_start(body: ResetStartIn, request: Request):
+    email = (body.email or '').strip().lower()
+    tid = (body.tenant_id or '').strip().lower()
+    if not EMAIL_RE.match(email):
+        return _err(400, 'email_invalid', 'Email không hợp lệ.')
+    if not _TENANT_ID_RE.match(tid):
+        return _err(400, 'tenant_invalid', 'Mã workspace không hợp lệ.')
+    ip = _client_ip(request)
+    if not _rate_ok('re:' + email, 3, 3600) or not _rate_ok('rip:' + ip, 20, 3600):
+        return _err(429, 'rate_limited', 'Bạn thử quá nhiều lần, vui lòng đợi.')
+    code = '%06d' % secrets.randbelow(1000000)
+    rid = secrets.token_urlsafe(9)
+    _RESET[rid] = {'tenant_id': tid, 'email': email, 'code': code,
+                   'exp': time.time() + CODE_TTL, 'tries': 0}
+    try:
+        _send_reset_code(email, code)
+    except Exception as e:
+        print("RESET_MAIL_FAILED:", repr(e), flush=True)
+        _RESET.pop(rid, None)
+        return _err(502, 'mail_failed', 'Không gửi được email. Thử lại sau.')
+    return {'ok': True, 'request_id': rid, 'expires_in': CODE_TTL}
+
+
+@app.post('/v1/reset/verify')
+def reset_verify(body: ResetVerifyIn):
+    r = _RESET.get(body.request_id)
+    if not r:
+        return _err(400, 'request_invalid', 'Yêu cầu không tồn tại, vui lòng thử lại.')
+    if time.time() > r['exp']:
+        _RESET.pop(body.request_id, None)
+        return _err(400, 'otp_expired', 'Mã đã hết hạn, vui lòng thử lại.')
+    r['tries'] += 1
+    if r['tries'] > 5:
+        _RESET.pop(body.request_id, None)
+        return _err(429, 'too_many', 'Sai mã nhiều lần, vui lòng thử lại.')
+    if (body.code or '').strip() != r['code']:
+        return _err(400, 'otp_wrong', 'Mã không đúng.')
+    if len(body.password or '') < 6:
+        return _err(400, 'weak_password', 'Mật khẩu tối thiểu 6 ký tự.')
+    # Đặt lại CHỈ khi email đúng là tài khoản trong workspace đó (reset.sh exit 4 nếu không).
+    env = dict(os.environ)
+    env['TENANT_PASSWORD'] = body.password
+    try:
+        subprocess.run(['bash', 'demo-data/packs/reset.sh', r['tenant_id'], r['email']],
+                       cwd=REPO_DIR, env=env, check=True,
+                       capture_output=True, timeout=PROVISION_TIMEOUT)
+    except subprocess.CalledProcessError as e:
+        rc = e.returncode
+        msg = ('Không tìm thấy workspace.' if rc == 3
+               else 'Email không khớp tài khoản của workspace này.' if rc == 4
+               else 'Đặt lại mật khẩu thất bại, vui lòng liên hệ hỗ trợ.')
+        print("RESET_FAILED rc=%s\n%s" % (rc, (e.stderr or b'')[-1500:].decode('utf-8', 'replace')), flush=True)
+        return _err(400 if rc in (3, 4) else 500, 'reset_failed', msg)
+    except Exception as e:
+        print("RESET_ERROR:", repr(e), flush=True)
+        return _err(500, 'reset_failed', 'Đặt lại mật khẩu thất bại, vui lòng liên hệ hỗ trợ.')
+    _RESET.pop(body.request_id, None)
+    return {'ok': True}

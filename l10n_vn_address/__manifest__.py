@@ -1,6 +1,6 @@
 {
     'name': 'Vietnam - Administrative Divisions (2025)',
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.1.0',
     'category': 'Localization',
     'summary': 'Tỉnh/Thành phố → Phường/Xã Việt Nam (cải cách 2025: 34 tỉnh, 2 cấp, bỏ huyện)',
     'description': """

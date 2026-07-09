@@ -1,6 +1,6 @@
 {
     'name': 'Vietnam - HR Localization',
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.1.0',
     'category': 'Human Resources/Employees',
     'summary': 'Bản địa hóa hồ sơ nhân sự Việt Nam: CCCD, MST, sổ BHXH, người phụ thuộc',
     'description': """

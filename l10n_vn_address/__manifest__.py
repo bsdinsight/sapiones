@@ -21,7 +21,7 @@ Phát triển bởi BSD — https://bsdinsight.com
     'author': 'BSD',
     'website': 'https://bsdinsight.com',
     'license': 'LGPL-3',
-    'depends': ['base'],
+    'depends': ['base', 'bsd_vn_address'],
     'data': [
         'security/ir.model.access.csv',
         'views/vn_ward_views.xml',

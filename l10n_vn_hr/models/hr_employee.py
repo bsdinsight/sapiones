@@ -56,8 +56,10 @@ class HrEmployee(models.Model):
     private_country_id = fields.Many2one(
         'res.country',
         default=lambda self: self.env.ref('base.vn', raise_if_not_found=False))
+    # Địa giới VN hội tụ về model dùng chung bsd_vn_address = frm.vn.ward.
+    # YÊU CẦU: frm.vn.ward phải có state_id (-> res.country.state) để domain/onchange dưới chạy.
     private_vn_ward_id = fields.Many2one(
-        'sapiones.vn.ward', string='Phường / Xã',
+        'frm.vn.ward', string='Phường / Xã',
         domain="[('state_id', '=?', private_state_id)]", groups='hr.group_hr_user')
 
     # --- Người phụ thuộc (giảm trừ gia cảnh) ---

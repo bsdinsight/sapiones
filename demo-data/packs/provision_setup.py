@@ -48,6 +48,10 @@ if admin and EMAIL:
     vals = {'name': NAME, 'login': EMAIL, 'email': EMAIL}
     if PASSWORD:
         vals['password'] = PASSWORD
+    # Home Action = Trang Tổng quan (nếu đã cài dashboard) → đăng nhập vào thẳng, không rơi Discuss.
+    dash = env.ref('sapiones_dashboard.action_sapiones_dashboard', raise_if_not_found=False)
+    if dash:
+        vals['action_id'] = dash.id
     try:
         admin.write(vals)
     except Exception as e:

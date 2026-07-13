@@ -1,28 +1,29 @@
+# -*- coding: utf-8 -*-
 {
-    'name': 'Employee Certificates & Expiry Alerts',
+    'name': 'Sapiones - Chứng chỉ nhân viên & Cảnh báo hết hạn',
     'version': '19.0.1.0.0',
     'category': 'Human Resources',
-    'summary': 'Track employee certificates, licenses & qualifications with automatic expiry reminders',
+    'summary': 'Quản lý chứng chỉ, bằng cấp, giấy phép của nhân viên; tự động theo dõi trạng thái '
+               '& nhắc gia hạn trước khi hết hạn | Employee certificate & license expiry tracking',
     'description': """
-Employee Certificates & Expiry Alerts
-=====================================
+Chứng chỉ nhân viên & Cảnh báo hết hạn (Sapiones)
+=================================================
 
-Keep every employee certificate, licence and qualification in one place —
-and never miss a renewal again.
+Quản lý tập trung chứng chỉ / bằng cấp / giấy phép của nhân viên và để Odoo
+tự canh ngày hết hạn giúp bạn — nhắc quản lý gia hạn trước khi hết hạn.
 
-* Certificate registry per employee: number, issuing body, issue/expiry dates, attached file
-* Configurable certificate types (safety, equipment operation, professional, language, degree…)
-  with a default validity period and a "mandatory" flag
-* Automatic status — Valid / Expiring soon / Expired / No expiry — with days to expiry
-* Scheduled reminder auto-creates a to-do activity for the manager before a certificate expires
-* Certificates tab on the employee form, an alert flag, and filtered reporting
+* Hồ sơ chứng chỉ theo từng nhân viên: số hiệu, đơn vị cấp, ngày cấp / ngày hết hạn, tệp đính kèm
+* Danh mục loại chứng chỉ (an toàn lao động, vận hành thiết bị, nghề, ngoại ngữ, bằng cấp…) kèm thời hạn mặc định & cờ "bắt buộc"
+* Trạng thái tự động: Còn hạn / Sắp hết hạn / Hết hạn / Không thời hạn, kèm số ngày còn lại
+* Cron nhắc hạn: tự tạo việc cần làm (To-Do) cho quản lý trước khi chứng chỉ hết hạn
+* Tab "Chứng chỉ" ngay trên hồ sơ nhân viên + báo cáo lọc chứng chỉ sắp / đã hết hạn
 
-Depends only on standard Odoo HR (``hr``). Free & open source (LGPL-3).
+Chỉ phụ thuộc Odoo HR chuẩn (hr). Mã nguồn mở, miễn phí (LGPL-3).
 
-Developed by BSD — https://bsdinsight.com
+Phát triển bởi BSD — https://bsdinsight.com
 """,
     'author': 'BSD',
-    'website': 'https://bsdinsight.com',
+    'website': 'https://sapiones.com',
     'support': 'info@bsdinsight.com',
     'license': 'LGPL-3',
     'depends': ['hr'],

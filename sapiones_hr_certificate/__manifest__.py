@@ -1,25 +1,29 @@
 {
-    'name': 'Sapiones HR - Chứng chỉ nhân viên',
+    'name': 'Employee Certificates & Expiry Alerts',
     'version': '19.0.1.0.0',
-    'category': 'Human Resources/Employees',
-    'summary': 'Quản lý chứng chỉ/bằng cấp nhân viên + theo dõi & cảnh báo hết hạn',
+    'category': 'Human Resources',
+    'summary': 'Track employee certificates, licenses & qualifications with automatic expiry reminders',
     'description': """
-Chứng chỉ nhân viên (Sapiones Community)
-========================================
+Employee Certificates & Expiry Alerts
+=====================================
 
-Quản lý chứng chỉ / bằng cấp / giấy phép của nhân viên, đặc biệt phục vụ
-tuân thủ an toàn & vận hành trong doanh nghiệp sản xuất.
+Keep every employee certificate, licence and qualification in one place —
+and never miss a renewal again.
 
-* Danh mục loại chứng chỉ (an toàn LĐ, vận hành thiết bị, nghề, ngoại ngữ, bằng cấp...)
-* Hồ sơ chứng chỉ: số hiệu, đơn vị cấp, ngày cấp / ngày hết hạn, tệp đính kèm
-* Trạng thái tự động: Còn hạn / Sắp hết hạn / Hết hạn / Không thời hạn
-* Cron nhắc hạn: tự tạo việc cần làm (To-Do) cho quản lý trước khi chứng chỉ hết hạn
-* Tab "Chứng chỉ" trên hồ sơ nhân viên + báo cáo lọc chứng chỉ sắp/đã hết hạn
+* Certificate registry per employee: number, issuing body, issue/expiry dates, attached file
+* Configurable certificate types (safety, equipment operation, professional, language, degree…)
+  with a default validity period and a "mandatory" flag
+* Automatic status — Valid / Expiring soon / Expired / No expiry — with days to expiry
+* Scheduled reminder auto-creates a to-do activity for the manager before a certificate expires
+* Certificates tab on the employee form, an alert flag, and filtered reporting
 
-Phát triển bởi BSD — https://bsdinsight.com
+Depends only on standard Odoo HR (``hr``). Free & open source (LGPL-3).
+
+Developed by BSD — https://bsdinsight.com
 """,
     'author': 'BSD',
     'website': 'https://bsdinsight.com',
+    'support': 'info@bsdinsight.com',
     'license': 'LGPL-3',
     'depends': ['hr'],
     'data': [
@@ -31,5 +35,5 @@ Phát triển bởi BSD — https://bsdinsight.com
         'views/menus.xml',
     ],
     'installable': True,
-    'application': False,
+    'application': True,
 }

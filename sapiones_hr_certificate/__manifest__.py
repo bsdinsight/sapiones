@@ -34,6 +34,7 @@ Developed by BSD — https://bsdinsight.com
         'views/hr_employee_views.xml',
         'views/menus.xml',
     ],
+    'images': ['static/description/banner.png'],
     'installable': True,
     'application': True,
 }

@@ -13,6 +13,7 @@ import os
 import re
 import ssl
 import json
+import unicodedata
 import time
 import secrets
 import smtplib
@@ -47,11 +48,74 @@ CF_ZONE_ID = os.environ.get('CF_ZONE_ID', '')
 CF_TUNNEL_CNAME = os.environ.get('CF_TUNNEL_CNAME', '')  # <tunnel-uuid>.cfargotunnel.com
 
 EMAIL_RE = re.compile(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
+_TENANT_ID_RE = re.compile(r'^[a-z0-9][a-z0-9-]{2,30}$')  # subdomain/DB hợp lệ: 3–31 ký tự
+
+# Từ khoá KHÔNG cho làm subdomain (hệ thống / dễ nhầm).
+_RESERVED = {
+    'www', 'api', 'demo', 'register', 'tuyendung', 'mail', 'admin', 'app',
+    'static', 'cdn', 'ftp', 'smtp', 'ns', 'ns1', 'ns2', 'mx', 'webmail',
+    'portal', 'status', 'blog', 'docs', 'help', 'support', 'sapiones',
+    'test', 'staging', 'dev', 'root', 'system', 'billing', 'account',
+}
+# Token pháp lý bỏ khi suy slug từ TÊN CÔNG TY (đã bỏ dấu, thường).
+_LEGAL_TOKENS = [
+    'cong ty', 'cty', 'tnhh', 'mtv', 'mot thanh vien', 'co phan', 'cp',
+    'tap doan', 'doanh nghiep tu nhan', 'dntn', 'chi nhanh', 'cn',
+]
+
+
+def _ascii_fold(s: str) -> str:
+    """Bỏ dấu tiếng Việt → ASCII. đ/Đ xử tay (NFKD không tách)."""
+    s = (s or '').replace('đ', 'd').replace('Đ', 'D')
+    s = unicodedata.normalize('NFKD', s)
+    return ''.join(c for c in s if not unicodedata.combining(c))
+
+
+def _slugify(name: str, strip_legal: bool = True) -> str:
+    """Tên → slug subdomain hợp lệ, hoặc '' nếu không tạo được (<3 ký tự).
+
+    strip_legal=True: bỏ tiền/hậu tố pháp lý (khi suy từ TÊN CÔNG TY).
+    strip_legal=False: chỉ sanitize (khi user tự gõ slug).
+    """
+    s = _ascii_fold(name).lower()
+    if strip_legal:
+        changed = True
+        while changed:
+            changed = False
+            for tok in _LEGAL_TOKENS:
+                for pat in (r'^\s*' + re.escape(tok) + r'\b[\s.,-]*',
+                            r'[\s.,-]*\b' + re.escape(tok) + r'\s*$'):
+                    new = re.sub(pat, '', s)
+                    if new != s:
+                        s, changed = new.strip(), True
+    s = re.sub(r'[^a-z0-9]+', '-', s)
+    s = re.sub(r'-{2,}', '-', s).strip('-')
+    if len(s) > 31:                       # regex tối đa 1+30 = 31 ký tự
+        head = s[:31]
+        s = (head.rsplit('-', 1)[0] if '-' in head else head).strip('-')
+    return s if _TENANT_ID_RE.match(s) else ''
+
+
+def _tenant_db_exists(slug: str) -> bool:
+    """DB tenant đã tồn tại chưa (nguồn sự thật cho 'đã bị lấy'). Best-effort."""
+    if not _TENANT_ID_RE.match(slug):
+        return False
+    sql = "SELECT 1 FROM pg_database WHERE datname='%s'" % slug
+    cmd = 'psql -U "${POSTGRES_USER:-odoo}" -d postgres -tAc "%s"' % sql
+    try:
+        out = subprocess.run(
+            ['docker', 'compose', '-f', 'docker-compose.vps.yml', 'exec', '-T', 'db',
+             'bash', '-lc', cmd],
+            cwd=REPO_DIR, capture_output=True, timeout=15)
+        return b'1' in (out.stdout or b'')
+    except Exception as e:
+        print("DB_CHECK_ERROR:", repr(e), flush=True)
+        return False
 
 app = FastAPI(title="Sapiones Provisioning API")
 app.add_middleware(
     CORSMiddleware, allow_origins=ALLOWED_ORIGINS,
-    allow_methods=['POST'], allow_headers=['*'])
+    allow_methods=['GET', 'POST'], allow_headers=['*'])
 
 _REQ = {}    # request_id -> {email,name,company,province,phone,code,exp,tries}
 _RATE = {}   # key -> [timestamps]
@@ -165,6 +229,7 @@ class StartIn(BaseModel):
     company: str = ''    # tên công ty
     province: str = ''
     phone: str = ''
+    subdomain: str = ''  # slug workspace user chọn/sửa; trống → suy từ company
 
 
 class VerifyIn(BaseModel):
@@ -178,6 +243,26 @@ def health():
     return {'ok': True, 'domain': BASE_DOMAIN}
 
 
+@app.get('/v1/subdomain/check')
+def subdomain_check(request: Request, name: str = '', from_company: int = 0):
+    """Form gọi realtime khi user gõ tên công ty / sửa slug.
+    from_company=1: input là TÊN CÔNG TY (bỏ token pháp lý); mặc định: slug user gõ."""
+    if not _rate_ok('chk:' + _client_ip(request), 60, 60):
+        return _err(429, 'rate_limited', 'Bạn thử quá nhiều lần, vui lòng đợi.')
+    slug = _slugify(name, strip_legal=bool(from_company))
+    if not slug:
+        return {'ok': True, 'available': False, 'slug': '', 'reason': 'invalid',
+                'message': 'Tên workspace cần ≥3 ký tự chữ/số. Vui lòng nhập lại.'}
+    if slug in _RESERVED:
+        return {'ok': True, 'available': False, 'slug': slug, 'reason': 'reserved',
+                'message': 'Tên này được giữ chỗ, vui lòng chọn tên khác.'}
+    if _tenant_db_exists(slug):
+        return {'ok': True, 'available': False, 'slug': slug, 'reason': 'taken',
+                'message': '"%s.%s" đã có người dùng.' % (slug, BASE_DOMAIN)}
+    return {'ok': True, 'available': True, 'slug': slug,
+            'url': 'https://%s.%s' % (slug, BASE_DOMAIN)}
+
+
 @app.post('/v1/register/start')
 def register_start(body: StartIn, request: Request):
     email = (body.email or '').strip().lower()
@@ -189,11 +274,22 @@ def register_start(body: StartIn, request: Request):
     ip = _client_ip(request)
     if not _rate_ok('e:' + email, 3, 3600) or not _rate_ok('ip:' + ip, 20, 3600):
         return _err(429, 'rate_limited', 'Bạn thử quá nhiều lần, vui lòng đợi.')
+    # Subdomain: ưu tiên slug user tự gõ (sanitize nhẹ), else suy từ tên công ty (bỏ token pháp lý).
+    slug = (_slugify(body.subdomain, strip_legal=False) if (body.subdomain or '').strip()
+            else _slugify(company, strip_legal=True))
+    if not slug:
+        return _err(400, 'subdomain_required',
+                    'Không tạo được tên workspace từ tên công ty. Vui lòng nhập tên workspace.')
+    if slug in _RESERVED:
+        return _err(400, 'subdomain_reserved', 'Tên workspace này được giữ chỗ, chọn tên khác.')
+    if _tenant_db_exists(slug):
+        return _err(409, 'subdomain_taken',
+                    '"%s.%s" đã có người dùng, vui lòng chọn tên khác.' % (slug, BASE_DOMAIN))
     code = '%06d' % secrets.randbelow(1000000)
     rid = secrets.token_urlsafe(9)
     _REQ[rid] = {'email': email, 'name': (body.name or '').strip(), 'company': company,
                  'province': (body.province or '').strip(),
-                 'phone': (body.phone or '').strip(), 'code': code,
+                 'phone': (body.phone or '').strip(), 'subdomain': slug, 'code': code,
                  'exp': time.time() + CODE_TTL, 'tries': 0}
     try:
         _send_code(email, body.name, code)
@@ -223,10 +319,14 @@ def register_verify(body: VerifyIn):
     env = dict(os.environ)
     if body.password:
         env['TENANT_PASSWORD'] = body.password
-    # ID = 6 SỐ (100000–999999) — DB + subdomain hợp lệ; provision.sh exit 2 khi trùng.
+    # Subdomain = slug tên công ty (đã chốt ở /start). Trùng (race) → thử hậu tố -2..-6.
+    base_slug = r.get('subdomain') or _slugify(r.get('company', ''))
+    if not base_slug:
+        return _err(400, 'subdomain_required', 'Thiếu tên workspace, vui lòng đăng ký lại.')
+    cands = [c for c in [base_slug] + ['%s-%d' % (base_slug, n) for n in range(2, 7)]
+             if _TENANT_ID_RE.match(c)]
     tid = None
-    for _attempt in range(6):
-        cand = str(secrets.randbelow(900000) + 100000)
+    for cand in cands:
         try:
             subprocess.run(
                 ['bash', 'demo-data/packs/provision.sh',
@@ -236,7 +336,7 @@ def register_verify(body: VerifyIn):
             tid = cand
             break
         except subprocess.CalledProcessError as e:
-            if e.returncode == 2:   # id trùng → thử số khác
+            if e.returncode == 2:   # slug trùng → thử hậu tố kế
                 print("PROVISION_RETRY: id %s đã tồn tại" % cand, flush=True)
                 continue
             print("PROVISION_FAILED rc=%s\nSTDOUT:\n%s\nSTDERR:\n%s" % (
@@ -248,8 +348,8 @@ def register_verify(body: VerifyIn):
             print("PROVISION_ERROR:", repr(e), flush=True)
             return _err(500, 'provision_failed', 'Lỗi tạo tài khoản, vui lòng liên hệ hỗ trợ.')
     if not tid:
-        print("PROVISION_FAILED: hết lượt thử id (toàn trùng)", flush=True)
-        return _err(500, 'provision_failed', 'Lỗi tạo tài khoản, vui lòng liên hệ hỗ trợ.')
+        return _err(409, 'subdomain_taken',
+                    'Tên workspace đã có người dùng, vui lòng chọn tên khác.')
 
     dns_ok = _create_tenant_dns(tid)
     url = 'https://%s.%s' % (tid, BASE_DOMAIN)
@@ -262,7 +362,6 @@ def register_verify(body: VerifyIn):
 
 
 # ── Quên mật khẩu (đặt lại qua OTP email — vì mail server tenant đã neutralize) ──
-_TENANT_ID_RE = re.compile(r'^[a-z0-9][a-z0-9-]{2,30}$')
 _RESET = {}   # request_id -> {tenant_id, email, code, exp, tries}
 
 

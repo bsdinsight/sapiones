@@ -93,6 +93,92 @@
         </field>
     </record>
 
+    <!-- Bộ lọc nhân sự: vị trí, nhân khẩu học, thời gian làm việc, giấy tờ -->
+    <record id="view_employee_filter_vn_hr" model="ir.ui.view">
+        <field name="name">hr.employee.search.vn.hr</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_filter"/>
+        <field name="arch" type="xml">
+            <!-- Pane trái: thêm Vị trí (chọn nhiều, có đếm) -->
+            <xpath expr="//searchpanel" position="inside">
+                <field name="job_id" string="Vị trí" select="multi" icon="fa-briefcase" enable_counters="1"/>
+            </xpath>
+            <!-- Ô tìm kiếm -->
+            <xpath expr="/search/field[@name='job_id']" position="after">
+                <field name="job_title" string="Chức danh"/>
+                <field name="work_location_id" string="Nơi làm việc"/>
+                <field name="vn_id_card" string="Số CCCD" groups="hr.group_hr_user"/>
+                <field name="private_state_id" string="Tỉnh / TP thường trú" groups="hr.group_hr_user"/>
+                <field name="vn_hometown" string="Quê quán" groups="hr.group_hr_user"/>
+                <field name="contract_type_id" string="Loại hợp đồng" groups="hr.group_hr_manager"/>
+            </xpath>
+            <!-- Bộ lọc -->
+            <filter name="inactive" position="before">
+                <filter name="vn_male" string="Nam" domain="[('sex', '=', 'male')]" groups="hr.group_hr_user"/>
+                <filter name="vn_female" string="Nữ" domain="[('sex', '=', 'female')]" groups="hr.group_hr_user"/>
+                <separator/>
+                <filter name="vn_age_a1" string="Dưới 25 tuổi" domain="[('vn_age_band', '=', 'a1')]" groups="hr.group_hr_user"/>
+                <filter name="vn_age_a2" string="25 – 34 tuổi" domain="[('vn_age_band', '=', 'a2')]" groups="hr.group_hr_user"/>
+                <filter name="vn_age_a3" string="35 – 44 tuổi" domain="[('vn_age_band', '=', 'a3')]" groups="hr.group_hr_user"/>
+                <filter name="vn_age_a4" string="45 – 54 tuổi" domain="[('vn_age_band', '=', 'a4')]" groups="hr.group_hr_user"/>
+                <filter name="vn_age_a5" string="Từ 55 tuổi" domain="[('vn_age_band', '=', 'a5')]" groups="hr.group_hr_user"/>
+                <separator/>
+                <filter name="vn_single" string="Độc thân" domain="[('marital', '=', 'single')]" groups="hr.group_hr_user"/>
+                <filter name="vn_married" string="Đã kết hôn" domain="[('marital', '=', 'married')]" groups="hr.group_hr_user"/>
+                <filter name="vn_has_dependent" string="Có người phụ thuộc" domain="[('dependent_ids.is_registered', '=', True)]" groups="hr.group_hr_user"/>
+                <filter name="vn_birthday_month" string="Sinh nhật tháng này"
+                        domain="[('vn_birth_month', '=', context_today().strftime('%m'))]" groups="hr.group_hr_user"/>
+                <separator/>
+                <filter name="vn_sen_s1" string="Thâm niên dưới 1 năm" domain="[('vn_seniority_band', '=', 's1')]" groups="hr.group_hr_user"/>
+                <filter name="vn_sen_s2" string="Thâm niên 1 – dưới 3 năm" domain="[('vn_seniority_band', '=', 's2')]" groups="hr.group_hr_user"/>
+                <filter name="vn_sen_s3" string="Thâm niên 3 – dưới 5 năm" domain="[('vn_seniority_band', '=', 's3')]" groups="hr.group_hr_user"/>
+                <filter name="vn_sen_s4" string="Thâm niên 5 – dưới 10 năm" domain="[('vn_seniority_band', '=', 's4')]" groups="hr.group_hr_user"/>
+                <filter name="vn_sen_s5" string="Thâm niên từ 10 năm" domain="[('vn_seniority_band', '=', 's5')]" groups="hr.group_hr_user"/>
+                <separator/>
+                <filter name="vn_on_trial" string="Đang thử việc"
+                        domain="[('trial_date_end', '>=', context_today().strftime('%Y-%m-%d'))]" groups="hr.group_hr_manager"/>
+                <filter name="vn_contract_expiring" string="Hợp đồng hết hạn trong 30 ngày"
+                        domain="[('contract_date_end', '>=', context_today().strftime('%Y-%m-%d')),
+                                 ('contract_date_end', '&lt;=', (context_today() + relativedelta(days=30)).strftime('%Y-%m-%d'))]"
+                        groups="hr.group_hr_manager"/>
+                <filter name="vn_permit_expiring" string="GPLĐ / visa hết hạn trong 60 ngày"
+                        domain="['|', ('vn_work_permit_expiry', '&lt;=', (context_today() + relativedelta(days=60)).strftime('%Y-%m-%d')),
+                                      ('vn_visa_expiry', '&lt;=', (context_today() + relativedelta(days=60)).strftime('%Y-%m-%d'))]"
+                        groups="hr.group_hr_user"/>
+                <filter name="vn_foreigner" string="Người nước ngoài" domain="[('is_foreigner', '=', True)]" groups="hr.group_hr_user"/>
+                <separator/>
+            </filter>
+            <!-- Nhóm theo -->
+            <filter name="group_employee_type" position="after">
+                <filter name="vn_g_work_location" string="Nơi làm việc" context="{'group_by': 'work_location_id'}"/>
+                <filter name="vn_g_contract_type" string="Loại hợp đồng" context="{'group_by': 'contract_type_id'}" groups="hr.group_hr_manager"/>
+                <separator/>
+                <filter name="vn_g_sex" string="Giới tính" context="{'group_by': 'sex'}" groups="hr.group_hr_user"/>
+                <filter name="vn_g_age" string="Độ tuổi" context="{'group_by': 'vn_age_band'}" groups="hr.group_hr_user"/>
+                <filter name="vn_g_marital" string="Tình trạng hôn nhân" context="{'group_by': 'marital'}" groups="hr.group_hr_user"/>
+                <filter name="vn_g_certificate" string="Trình độ" context="{'group_by': 'certificate'}" groups="hr.group_hr_user"/>
+                <filter name="vn_g_state" string="Tỉnh / TP thường trú" context="{'group_by': 'private_state_id'}" groups="hr.group_hr_user"/>
+                <filter name="vn_g_ethnicity" string="Dân tộc" context="{'group_by': 'vn_ethnicity'}" groups="hr.group_hr_user"/>
+                <filter name="vn_g_birth_month" string="Tháng sinh" context="{'group_by': 'vn_birth_month'}" groups="hr.group_hr_user"/>
+                <separator/>
+                <filter name="vn_g_seniority" string="Thâm niên" context="{'group_by': 'vn_seniority_band'}" groups="hr.group_hr_user"/>
+            </filter>
+        </field>
+    </record>
+
+    <!-- Danh sách: cột tuỳ chọn Tuổi, Thâm niên (Giới tính / Ngày vào làm do phân hệ Tiền lương thêm) -->
+    <record id="view_employee_tree_vn_hr" model="ir.ui.view">
+        <field name="name">hr.employee.list.vn.hr</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="inside">
+                <field name="vn_age" string="Tuổi" optional="hide" groups="hr.group_hr_user"/>
+                <field name="vn_seniority_band" optional="hide" groups="hr.group_hr_user"/>
+            </xpath>
+        </field>
+    </record>
+
     <!-- Mặc định mở danh sách Nhân viên ở dạng LIST (thay vì kanban) — hợp DN đông NV.
          HR gốc gắn view_ids với kanban seq nhỏ nhất → đè view_mode. Clear view_ids để
          view_mode (list trước) quyết định view mặc định. -->

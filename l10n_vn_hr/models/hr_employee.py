@@ -70,6 +70,79 @@ class HrEmployee(models.Model):
         string='Số NPT đã đăng ký', compute='_compute_dependent_count',
         groups='hr.group_hr_user')
 
+    # --- Nhân khẩu học & thâm niên (để lọc / nhóm / báo cáo) ---
+    # Lưu sẵn vì phải nhóm được trên danh sách & pivot; tuổi và thâm niên đổi theo ngày
+    # nên tác vụ hằng ngày tính lại (_cron_vn_refresh_demography).
+    vn_age = fields.Integer(
+        string='Tuổi', compute='_compute_vn_age', store=True, groups='hr.group_hr_user')
+    vn_age_band = fields.Selection([
+        ('a1', 'Dưới 25 tuổi'),
+        ('a2', '25 – 34 tuổi'),
+        ('a3', '35 – 44 tuổi'),
+        ('a4', '45 – 54 tuổi'),
+        ('a5', 'Từ 55 tuổi'),
+    ], string='Độ tuổi', compute='_compute_vn_age', store=True, groups='hr.group_hr_user')
+    vn_birth_month = fields.Selection(
+        [('%02d' % m, 'Tháng %d' % m) for m in range(1, 13)],
+        string='Tháng sinh', compute='_compute_vn_age', store=True, groups='hr.group_hr_user')
+    vn_seniority_date = fields.Date(
+        string='Ngày tính thâm niên', compute='_compute_vn_seniority', store=True,
+        groups='hr.group_hr_user',
+        help='Ngày vào làm nếu đã khai (phân hệ Tiền lương); nếu chưa thì ngày bắt đầu hợp đồng '
+             'đầu tiên của giai đoạn làm việc liên tục hiện tại (gián đoạn dưới 4 ngày).')
+    vn_seniority_band = fields.Selection([
+        ('s1', 'Dưới 1 năm'),
+        ('s2', '1 – dưới 3 năm'),
+        ('s3', '3 – dưới 5 năm'),
+        ('s4', '5 – dưới 10 năm'),
+        ('s5', 'Từ 10 năm'),
+    ], string='Thâm niên', compute='_compute_vn_seniority', store=True, groups='hr.group_hr_user')
+
+    @api.depends('birthday')
+    def _compute_vn_age(self):
+        today = fields.Date.today()
+        for emp in self.sudo():
+            bd = emp.birthday
+            if not bd:
+                emp.vn_age = 0
+                emp.vn_age_band = False
+                emp.vn_birth_month = False
+                continue
+            age = relativedelta(today, bd).years
+            emp.vn_age = age
+            emp.vn_birth_month = '%02d' % bd.month
+            emp.vn_age_band = ('a1' if age < 25 else 'a2' if age < 35 else 'a3' if age < 45
+                               else 'a4' if age < 55 else 'a5')
+
+    def _vn_seniority_start(self):
+        """Ngày bắt đầu tính thâm niên. Phân hệ khác (Tiền lương) override để ưu tiên ngày vào làm đã khai."""
+        self.ensure_one()
+        return self._get_first_contract_date() if self.id else False
+
+    @api.depends('version_ids.contract_date_start', 'version_ids.contract_date_end',
+                 'version_ids.date_version')
+    def _compute_vn_seniority(self):
+        today = fields.Date.today()
+        for emp in self.sudo():
+            start = emp._vn_seniority_start()
+            emp.vn_seniority_date = start or False
+            if not start or start > today:
+                emp.vn_seniority_band = False
+                continue
+            delta = relativedelta(today, start)
+            years = delta.years + delta.months / 12.0
+            emp.vn_seniority_band = ('s1' if years < 1 else 's2' if years < 3 else 's3' if years < 5
+                                     else 's4' if years < 10 else 's5')
+
+    @api.model
+    def _cron_vn_refresh_demography(self):
+        """Tính lại tuổi / thâm niên hằng ngày (giá trị lưu sẵn đổi theo ngày)."""
+        emps = self.sudo().with_context(active_test=False).search([])
+        for fname in ('vn_age', 'vn_seniority_band'):
+            self.env.add_to_compute(self._fields[fname], emps)
+        emps.flush_recordset()
+        return len(emps)
+
     @api.depends('dependent_ids', 'dependent_ids.is_registered')
     def _compute_dependent_count(self):
         for emp in self:

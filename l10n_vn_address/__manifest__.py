@@ -1,6 +1,6 @@
 {
     'name': 'Vietnam - Administrative Divisions (2025)',
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.1.0',
     'category': 'Localization',
     'summary': 'Tỉnh/Thành phố → Phường/Xã Việt Nam (cải cách 2025: 34 tỉnh, 2 cấp, bỏ huyện)',
     'description': """
@@ -21,7 +21,7 @@ Phát triển bởi BSD — https://bsdinsight.com
     'author': 'BSD',
     'website': 'https://bsdinsight.com',
     'license': 'LGPL-3',
-    'depends': ['base'],
+    'depends': ['base', 'bsd_vn_address'],
     'data': [
         'security/ir.model.access.csv',
         'views/vn_ward_views.xml',

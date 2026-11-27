@@ -42,3 +42,6 @@ odoo.conf
 *.internal.md
 feature-tiering.md
 deploy/backup.env
+
+# ===== Tài liệu nội bộ, video, dữ liệu outreach — KHÔNG đưa lên repo công khai =====
+/docs/

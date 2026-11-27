@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sapiones Demo — chọn ngành</title>
+<meta name="description" content="Dùng thử Sapiones Quản trị nhân sự trên dữ liệu minh hoạ của một doanh nghiệp theo ngành.">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="https://sapiones.com/assets/logo_icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--indigo:#4F46E5;--cyan:#06B6D4;--ink:#0F172A;--slate:#475569;--mute:#94A3B8;--bg:#fff;--soft:#F8FAFC;--line:#E2E8F0;
+  --grad:linear-gradient(135deg,#4F46E5,#06B6D4);--shadow:0 10px 30px -12px rgba(15,23,42,.18);--radius:18px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);background:var(--soft);line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+header{background:#fff;border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px}
+.brand img{width:34px;height:34px;border-radius:9px}
+header nav a{font-size:14px;font-weight:600;color:var(--slate)}
+header nav a:hover{color:var(--indigo)}
+.hero{padding:56px 0 28px;text-align:center}
+.eyebrow{display:inline-block;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--indigo);background:#EEF2FF;padding:6px 14px;border-radius:999px}
+h1{margin-top:16px;font-size:clamp(28px,5vw,42px);line-height:1.15;font-weight:800;letter-spacing:-.02em}
+h1 .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.lead{margin:14px auto 0;max-width:620px;color:var(--slate);font-size:17px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px;padding:24px 0 16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px;display:flex;flex-direction:column;transition:transform .15s,border-color .15s}
+.card:hover{transform:translateY(-3px);border-color:#C7D2FE}
+.ico{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-size:28px;background:#EEF2FF}
+.card h2{margin-top:16px;font-size:21px;font-weight:800}
+.card .co{font-size:14px;color:var(--mute);font-weight:500}
+.stats{display:flex;gap:18px;margin:16px 0 4px;flex-wrap:wrap}
+.stats div{font-size:13px;color:var(--slate)}
+.stats b{display:block;font-size:22px;color:var(--ink);font-weight:800;line-height:1.2}
+ul{list-style:none;margin:14px 0 22px;flex:1}
+li{position:relative;padding-left:22px;font-size:15px;color:var(--slate);margin:7px 0}
+li::before{content:"";position:absolute;left:4px;top:.62em;width:7px;height:7px;border-radius:50%;background:var(--cyan)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;font-size:15px;padding:13px 20px;border-radius:12px;background:var(--grad);color:#fff;box-shadow:0 8px 20px -8px rgba(79,70,229,.6)}
+.btn:hover{filter:brightness(1.06)}
+.host{margin-top:10px;text-align:center;font-size:13px;color:var(--mute)}
+.login{margin:18px auto 0;max-width:620px;background:#fff;border:1px dashed var(--line);border-radius:14px;padding:14px 18px;text-align:center;font-size:15px;color:var(--slate)}
+.login code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#EEF2FF;color:var(--indigo);padding:2px 8px;border-radius:6px;font-weight:700}
+footer{padding:36px 0 44px;text-align:center;font-size:13px;color:var(--mute)}
+footer a{color:var(--slate);font-weight:600}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <a class="brand" href="https://sapiones.com"><img src="https://sapiones.com/assets/logo_icon.png" alt="">Sapiones</a>
+  <nav><a href="https://sapiones.com/dang-ky.html">Tạo workspace riêng</a></nav>
+</div></header>
+
+<main class="wrap">
+  <section class="hero">
+    <span class="eyebrow">Bản demo trực tiếp</span>
+    <h1>Chọn một doanh nghiệp<br><span class="g">để dùng thử Sapiones</span></h1>
+    <p class="lead">Mỗi bản demo là một công ty của một ngành, có sẵn hồ sơ nhân viên, chấm công, nghỉ phép, phiếu lương, KPI và tuyển dụng. Phần mềm thật, dữ liệu minh hoạ.</p>
+  </section>
+
+  <section class="grid">
+    <a class="card" href="https://may.sapiones.com/web/login">
+      <div class="ico">🧵</div>
+      <h2>Doanh nghiệp may mặc</h2>
+      <div class="co">Công ty Demo Sapiones</div>
+      <div class="stats"><div><b>50</b>nhân viên</div><div><b>14</b>phòng ban</div></div>
+      <ul>
+        <li>Xưởng, chuyền may, tổ QC theo sơ đồ tổ chức</li>
+        <li>Chấm công theo ca, tăng ca 150% / 200% / 300%</li>
+        <li>Phiếu lương có BHXH, thuế TNCN</li>
+      </ul>
+      <span class="btn">Vào demo may mặc →</span>
+      <div class="host">may.sapiones.com</div>
+    </a>
+
+    <a class="card" href="https://fnb.sapiones.com/web/login">
+      <div class="ico">☕</div>
+      <h2>Chuỗi F&amp;B</h2>
+      <div class="co">Công ty CP F&amp;B Demo Sapiones</div>
+      <div class="stats"><div><b>88</b>nhân viên</div><div><b>8</b>cửa hàng</div><div><b>27</b>bán thời gian</div></div>
+      <ul>
+        <li>Cửa hàng ở TP.HCM và Hà Nội, bếp trung tâm, khối văn phòng</li>
+        <li>Ca gãy, ca bán thời gian, tuyển dụng theo cửa hàng</li>
+        <li>Chứng chỉ an toàn thực phẩm, khám sức khoẻ định kỳ</li>
+      </ul>
+      <span class="btn">Vào demo F&amp;B →</span>
+      <div class="host">fnb.sapiones.com</div>
+    </a>
+  </section>
+
+  <p class="login">Đăng nhập cả hai bản bằng tài khoản <code>demo</code> mật khẩu <code>demo</code></p>
+</main>
+
+<footer>© Sapiones · <a href="https://sapiones.com">sapiones.com</a></footer>
+</body>
+</html>

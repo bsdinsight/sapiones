@@ -7,8 +7,9 @@ class ResPartner(models.Model):
     country_id = fields.Many2one(
         'res.country',
         default=lambda self: self.env.ref('base.vn', raise_if_not_found=False))
+    # Hội tụ về model dùng chung bsd_vn_address = frm.vn.ward (yêu cầu có state_id -> res.country.state).
     vn_ward_id = fields.Many2one(
-        'sapiones.vn.ward', string='Phường / Xã',
+        'frm.vn.ward', string='Phường / Xã',
         domain="[('state_id', '=?', state_id)]",
         help='Đơn vị hành chính cấp xã (cải cách 2025). Lọc theo Tỉnh/Thành phố đã chọn.')
 

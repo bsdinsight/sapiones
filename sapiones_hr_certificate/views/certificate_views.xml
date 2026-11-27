@@ -7,6 +7,7 @@
         <field name="arch" type="xml">
             <list decoration-danger="state == 'expired'" decoration-warning="state == 'expiring'">
                 <field name="employee_id"/>
+                <field name="department_id" optional="show"/>
                 <field name="name"/>
                 <field name="type_id"/>
                 <field name="number" optional="show"/>
@@ -63,6 +64,7 @@
             <search>
                 <field name="name"/>
                 <field name="employee_id"/>
+                <field name="department_id"/>
                 <field name="type_id"/>
                 <field name="number"/>
                 <filter name="f_expired" string="Hết hạn"
@@ -75,6 +77,13 @@
                 <filter name="g_employee" string="Nhân viên" context="{'group_by': 'employee_id'}"/>
                 <filter name="g_category" string="Nhóm" context="{'group_by': 'category'}"/>
                 <filter name="g_type" string="Loại" context="{'group_by': 'type_id'}"/>
+                <filter name="g_dept" string="Phòng ban" context="{'group_by': 'department_id'}"/>
+                <!-- Pane trái: chỉ trường LƯU (state tính theo ngày hôm nay nên để ở Bộ lọc) -->
+                <searchpanel view_types="list">
+                    <field name="department_id" string="Phòng ban" icon="fa-sitemap" select="one" enable_counters="1"/>
+                    <field name="category" string="Nhóm" icon="fa-folder-open" select="multi" enable_counters="1"/>
+                    <field name="type_id" string="Loại chứng chỉ" icon="fa-certificate" select="multi" enable_counters="1"/>
+                </searchpanel>
             </search>
         </field>
     </record>

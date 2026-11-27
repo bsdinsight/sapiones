@@ -23,7 +23,7 @@ import urllib.error
 from email.message import EmailMessage
 
 from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -56,6 +56,8 @@ _RESERVED = {
     'static', 'cdn', 'ftp', 'smtp', 'ns', 'ns1', 'ns2', 'mx', 'webmail',
     'portal', 'status', 'blog', 'docs', 'help', 'support', 'sapiones',
     'test', 'staging', 'dev', 'root', 'system', 'billing', 'account',
+    # demo theo ngành (mỗi ngành một DB/subdomain) + chỗ cho ngành sắp làm
+    'may', 'fnb', 'kpidemo', 'dientu', 'xaydung', 'banle', 'logistics',
 }
 # Token pháp lý bỏ khi suy slug từ TÊN CÔNG TY (đã bỏ dấu, thường).
 _LEGAL_TOKENS = [
@@ -116,6 +118,32 @@ app = FastAPI(title="Sapiones Provisioning API")
 app.add_middleware(
     CORSMiddleware, allow_origins=ALLOWED_ORIGINS,
     allow_methods=['GET', 'POST'], allow_headers=['*'])
+
+# ── demo.<BASE_DOMAIN>: trang chọn ngành ─────────────────────────────────────
+# Mỗi ngành là một DB/subdomain riêng (may, fnb…). Tunnel định tuyến demo.<BASE_DOMAIN>
+# về API này (đặt TRƯỚC route *.sapiones.com). "/" → trang chọn ngành; đường dẫn khác là
+# link cũ của bản demo may (video, bài đăng) → chuyển sang may.<BASE_DOMAIN> giữ nguyên path.
+DEMO_HOST = 'demo.' + BASE_DOMAIN
+DEMO_LEGACY_HOST = 'may.' + BASE_DOMAIN
+_DEMO_PAGE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'demo_chon_nganh.html')
+
+
+@app.middleware('http')
+async def demo_chooser(request: Request, call_next):
+    host = (request.headers.get('host') or '').split(':')[0].lower()
+    if host != DEMO_HOST:
+        return await call_next(request)
+    path = request.url.path
+    if path in ('/', '/index.html'):
+        with open(_DEMO_PAGE, encoding='utf-8') as f:
+            return HTMLResponse(f.read(), headers={'Cache-Control': 'public, max-age=300'})
+    if path == '/favicon.ico':
+        return RedirectResponse('https://%s/assets/logo_icon.png' % BASE_DOMAIN, 302)
+    url = 'https://%s%s' % (DEMO_LEGACY_HOST, path)
+    if request.url.query:
+        url += '?' + request.url.query
+    return RedirectResponse(url, 302)
+
 
 _REQ = {}    # request_id -> {email,name,company,province,phone,code,exp,tries}
 _RATE = {}   # key -> [timestamps]

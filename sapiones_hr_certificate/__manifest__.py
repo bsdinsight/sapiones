@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Sapiones - Chứng chỉ nhân viên & Cảnh báo hết hạn',
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.1.0',
     'category': 'Human Resources',
     'summary': 'Quản lý chứng chỉ, bằng cấp, giấy phép của nhân viên; tự động theo dõi trạng thái '
                '& nhắc gia hạn trước khi hết hạn | Employee certificate & license expiry tracking',

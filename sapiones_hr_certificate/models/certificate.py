@@ -15,6 +15,10 @@ class HrCertificate(models.Model):
     employee_id = fields.Many2one(
         'hr.employee', string='Nhân viên', required=True,
         ondelete='cascade', index=True, tracking=True)
+    # Phòng ban LƯU theo nhân viên — cho pane lọc trái (pane chỉ nhận trường lưu của chính model).
+    department_id = fields.Many2one(
+        'hr.department', string='Phòng ban',
+        related='employee_id.department_id', store=True, index=True)
     type_id = fields.Many2one('sapiones.hr.certificate.type', string='Loại')
     category = fields.Selection(related='type_id.category', string='Nhóm', store=True)
     number = fields.Char(string='Số hiệu')
